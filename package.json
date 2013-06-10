@@ -1,0 +1,27 @@
+{
+  "name": "compy",
+  "version": "0.0.5",
+  "description": "component js boilerplate js project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Eldar Djafarov <djkojb@gmail.com>",
+  "license": "BSD",
+  "dependencies":{
+    "grunt-cli":"latest",
+    "component":"latest",
+    "grunt":"latest",
+    "grunt-component-build":"latest",
+    "grunt-contrib-connect":"latest",
+    "grunt-contrib-clean":"latest",
+    "grunt-contrib-watch":"latest",
+    "grunt-preprocess":"latest",
+    "grunt-contrib-concat":"latest",
+    "connect-livereload":"latest"
+  },
+  "bin":{
+    "compy":"./bin/compy"
+  }
+}
