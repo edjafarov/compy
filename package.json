@@ -13,7 +13,7 @@
     "grunt-cli":"latest",
     "component":"latest",
     "grunt":"latest",
-    "grunt-component-build":"latest",
+    "grunt-component-build":"git://github.com/edjafarov/grunt-component-build.git",
     "grunt-contrib-connect":"latest",
     "grunt-contrib-clean":"latest",
     "grunt-contrib-watch":"latest",

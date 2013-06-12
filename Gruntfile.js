@@ -29,7 +29,30 @@ module.exports = function(grunt){
     component_build:{
       app:{
         base: base,
-        output:'<%= dest %>'
+        output:'<%= dest %>',
+        config:{
+          name: '<%= pkg.name %>',
+          main: '<%= pkg.component.main %>',
+          dependencies: '<%= pkg.component.dependencies %>',
+          version: '<%= pkg.version %>',
+          license: '<%= pkg.license %>',
+          scripts:'<%= src.js %>',
+          styles: '<%= src.css %>',
+          images: '<%= src.img %>',
+          fonts: '<%= src.fnt %>'
+        },
+        configure: function(builder){
+          ['images','fonts','scripts','styles'].forEach(function(asset){
+            var remap = [];
+            if(!builder.config[asset]) return;
+            builder.config[asset].forEach(function(filepath){
+              var relPath = path.relative(base, filepath);
+              if(/^(components|dist)\//.test(relPath)) return;
+              remap.push(relPath);
+            })
+            builder.config[asset] = remap;
+          })
+        }
       }
     },
     watch: {
@@ -132,7 +155,7 @@ module.exports = function(grunt){
   })
 
 
-  grunt.registerTask('install_component', 'stuff', function(){
+  grunt.registerTask('install_component', 'Install component by spawning a cmd - which is lame', function(){
     var args = [];
     var pkgCheck = process.argv.slice(-1)[0].split(':');
     if(pkgCheck.length > 1){
@@ -146,6 +169,7 @@ module.exports = function(grunt){
       stdio: 'inherit'
     });
     compInstall.on('close', function(){
+      //TODO: write out new installed component in package json
       end();
     });
   })
@@ -162,7 +186,7 @@ module.exports = function(grunt){
 
   grunt.registerTask('install', ['component_json', 'install_component', 'clean:comp'])
   
-  grunt.registerTask('compile', ['clean:dist','component_json', 'component_build','concat','preprocess','clean:comp']);
+  grunt.registerTask('compile', ['clean:dist', 'component_build','concat','preprocess']);
 
   grunt.registerTask('default',['compile'])
 }
