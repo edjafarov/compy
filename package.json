@@ -9,19 +9,20 @@
   "repository": "",
   "author": "Eldar Djafarov <djkojb@gmail.com>",
   "license": "BSD",
-  "dependencies":{
-    "grunt-cli":"latest",
-    "component":"latest",
-    "grunt":"latest",
-    "grunt-component-build":"git://github.com/edjafarov/grunt-component-build.git",
-    "grunt-contrib-connect":"latest",
-    "grunt-contrib-clean":"latest",
-    "grunt-contrib-watch":"latest",
-    "grunt-preprocess":"latest",
-    "grunt-contrib-concat":"latest",
-    "connect-livereload":"latest"
+  "dependencies": {
+    "grunt-cli": "latest",
+    "component": "latest",
+    "grunt": "latest",
+    "grunt-component-build": "git://github.com/edjafarov/grunt-component-build.git",
+    "grunt-contrib-connect": "latest",
+    "grunt-contrib-clean": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-preprocess": "latest",
+    "grunt-contrib-concat": "latest",
+    "connect-livereload": "latest",
+    "async": "~0.2.9"
   },
-  "bin":{
-    "compy":"./bin/compy"
+  "bin": {
+    "compy": "./bin/compy"
   }
 }
