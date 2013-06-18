@@ -4,7 +4,7 @@
   "description": "component js boilerplate js project",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./node_modules/.bin/mocha test/compy.spec.js"
   },
   "repository": "",
   "author": "Eldar Djafarov <djkojb@gmail.com>",
@@ -20,7 +20,11 @@
     "grunt-preprocess": "latest",
     "grunt-contrib-concat": "latest",
     "connect-livereload": "latest",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "mocha": "~1.11.0",
+    "chai": "~1.6.1",
+    "ncp": "~0.4.2",
+    "fs.extra": "~1.2.1"
   },
   "bin": {
     "compy": "./bin/compy"

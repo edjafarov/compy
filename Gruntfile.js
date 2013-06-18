@@ -12,7 +12,6 @@ var folderDir = function folderDir(connect, point){
 }
 
 module.exports = function(grunt){
-
   var base = grunt.option('targetBase');
   var destination = base +"/dist";
   grunt.initConfig({
@@ -136,7 +135,7 @@ module.exports = function(grunt){
         config[asset] = grunt.file.expand(config[asset]);
       }
     });
-    
+   
     var done = this.async();
     
     ignoreSources(config);
