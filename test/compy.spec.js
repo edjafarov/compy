@@ -57,6 +57,33 @@ describe("compy should", function(){
 
   })
 
+  describe('compile', function(){
+    this.timeout(100000);
+    before(function(done){
+      cleanDir(function(){
+        prepareDir(function(){
+          runCompyWith('install', function(){
+            runCompyWith('compile', done);
+          });
+        });
+      })
+    })
+    it('should exists /dist folder', function(done){
+      expect(fs.existsSync(__dirname + '/tempdata/dist')).to.be.ok;
+      done();
+    })
+    it('folder should contain index.html and app.js files', function(done){
+      expect(fs.existsSync(__dirname + '/tempdata/dist/index.html')).to.be.ok;
+      expect(fs.existsSync(__dirname + '/tempdata/dist/app.js')).to.be.ok;
+      done();
+    })
+    it('app.js should contain special string', function(done){
+      expect(fs.readFileSync(__dirname + '/tempdata/dist/app.js').toString()).to.contain('/* test string */');
+      done();
+    })
+  })
+
+
 
   
 })
@@ -69,11 +96,10 @@ function runCompyWith(comands, done){
   compy.on('close', function(){
     done()
   });
-/*
+  /*
   compy.stdout.on('data', function(data){
     console.log(data.toString());
-  })
- */
+  })*/
   compy.stderr.on('data', function(data){
     console.log(data.toString());
   })

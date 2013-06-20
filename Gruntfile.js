@@ -120,12 +120,12 @@ module.exports = function(grunt){
     })
   }
   
-  grunt.loadNpmTasks('grunt-component-build');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-preprocess');
-  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadTasks('./node_modules/grunt-component-build/tasks');
+  grunt.loadTasks('./node_modules/grunt-contrib-connect/tasks');
+  grunt.loadTasks('./node_modules/grunt-contrib-watch/tasks');
+  grunt.loadTasks('./node_modules/grunt-contrib-clean/tasks');
+  grunt.loadTasks('./node_modules/grunt-preprocess/tasks');
+  grunt.loadTasks('./node_modules/grunt-contrib-concat/tasks');
 
 
   grunt.registerTask('install', 'Install component', function(){
