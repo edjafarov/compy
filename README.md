@@ -1,4 +1,5 @@
-compy - rapid frontend development cli tool.
+[![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
+compy - rapid frontend development cli tool
 =====
 Compy is a cli that allows to raise frontend development usability to the next level. It allows you to install components and use them in your code right away. Compy uses TJ's components so it have all capabilities including local require and building the project
 
