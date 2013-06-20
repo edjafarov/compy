@@ -6,7 +6,7 @@ Compy is a cli that allows to raise frontend development usability to the next l
 ### features
 * installed components wire up instantly
 * local require
-* livereload
+* local static server +livereload
 * componentjs packages support
 
 #### todo:
@@ -15,11 +15,34 @@ Compy is a cli that allows to raise frontend development usability to the next l
 - tbd
 
 ## cli comands
-* ```install[:<component>]``` - installs components from dependencies. With argument installs component.
+* ```install[:<component>]``` - installs components from dependencies. With argument installs component, automatically saves it inside package.json
 * ```compile``` - compiles the project in ```dist``` folder
 * ```server[:watch]``` - runs simple http server for dist folder. With ```watch``` argument server watches the changes in source and recompiles the project.
 
-## config
-TBD
+TODO:
+* ```build``` - builds (compiles + minifies) the project in ```dist``` folder
 
+## config
+The configuration for compy sits in package.json inside component namespace. ```main``` is an entry point of your app and the only required property.
+
+```json
+{                                                                                                                 
+  "name": "appName",
+  "version": "0.0.0",
+  "description": "my awesome app",
+  "main": "index.js",
+  "license": "BSD",
+  "component": {
+    "dependencies": {
+      "component/jquery": "*",
+      "component/tip": "*",
+      "component/s3": "*"
+    },
+    "main": "app.js"
+  }
+}
+```
+## license
+
+MIT
 
