@@ -20,6 +20,23 @@ Compy is a cli that allows to raise frontend development usability to the next l
 * ```server[:watch]``` - runs simple http server for dist folder. With ```watch``` argument server watches the changes in source and recompiles the project.
 
 ## config
-TBD
 
+package.json
+```json
+{                                                                                                                 
+  "name": "appName",
+  "version": "0.0.0",
+  "description": "my awesome app",
+  "main": "index.js",
+  "license": "BSD",
+  "component": {
+    "dependencies": {
+      "component/jquery": "*",
+      "component/tip": "*",
+      "component/s3": "*"
+    },
+    "main": "app.js"
+  }
+}
+```
 
