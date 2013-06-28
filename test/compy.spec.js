@@ -96,10 +96,9 @@ function runCompyWith(comands, done){
   compy.on('close', function(){
     done()
   });
-  /*
   compy.stdout.on('data', function(data){
     console.log(data.toString());
-  })*/
+  })
   compy.stderr.on('data', function(data){
     console.log(data.toString());
   })
