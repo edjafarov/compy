@@ -12,6 +12,8 @@ var folderDir = function folderDir(connect, point){
 }
 
 module.exports = function(grunt){
+  var appJsProd = 'app' + Date.now() + ".js";
+  var appCssProd = 'app' + Date.now() + ".css";
   var base = grunt.option('targetBase');
   var destination = base +"/dist";
   grunt.initConfig({
@@ -46,7 +48,6 @@ module.exports = function(grunt){
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
-          console.log(builder.config);
           ignoreSources(builder.config);
         },
         plugins:['coffee', 'templates']
@@ -94,15 +95,31 @@ module.exports = function(grunt){
       }
     },
     preprocess:{
-      options:{
-        context:{
-          name: '<%= pkg.name %>',
-          main: '<%= pkg.component.main %>',
-          description: '<%= pkg.description %>',
-          title: '<%= pkg.title %>'
-        }
-      },
       html:{
+        options:{
+          context:{
+            name: '<%= pkg.name %>',
+            main: '<%= pkg.component.main %>',
+            description: '<%= pkg.description %>',
+            title: '<%= pkg.title %>',
+            appdest: 'app.js',
+            appcss: 'app.css'
+          }
+        },
+        src:'./index.html',
+        dest:'<%= dest %>/index.html'
+      },
+      build:{
+        options:{
+          context:{
+            name: '<%= pkg.name %>',
+            main: '<%= pkg.component.main %>',
+            description: '<%= pkg.description %>',
+            title: '<%= pkg.title %>',
+            appdest: appJsProd,
+            appcss: appCssProd
+          }
+        },
         src:'./index.html',
         dest:'<%= dest %>/index.html'
       }
@@ -111,6 +128,18 @@ module.exports = function(grunt){
       dist: {
         src: ['<%= dest %>/app.js', 'tmpl/runner.js'],
         dest: '<%= dest%>/app.js'
+      }
+    },
+    uglify: {
+      build: {
+        src: ['<%= dest%>/app.js'],
+        dest: '<%= dest%>/' + appJsProd
+      }
+    },
+    cssmin: {
+      build: {
+        src: ['<%= dest%>/app.css'],
+        dest: '<%= dest%>/' + appCssProd
       }
     }
   })
@@ -124,7 +153,6 @@ module.exports = function(grunt){
         if(/^(components|dist)\//.test(relPath)) return;
         remap.push(relPath);
       })
-      
       config[asset] = remap;
     })
   }
@@ -135,17 +163,16 @@ module.exports = function(grunt){
   grunt.loadTasks('./node_modules/grunt-contrib-clean/tasks');
   grunt.loadTasks('./node_modules/grunt-preprocess/tasks');
   grunt.loadTasks('./node_modules/grunt-contrib-concat/tasks');
-
+  grunt.loadTasks('./node_modules/grunt-contrib-uglify/tasks');
+  grunt.loadTasks('./node_modules/grunt-contrib-cssmin/tasks');
 
   grunt.registerTask('install', 'Install component', function(){
     var config = grunt.config('componentConfig');
-    console.log(config);
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
       if(config[asset]){
         config[asset] = grunt.file.expand(config[asset]);
       }
     });
-    console.log(config);
     var done = this.async();
     
     ignoreSources(config);
@@ -175,7 +202,9 @@ module.exports = function(grunt){
     }
   });
   
-  grunt.registerTask('compile', ['clean:dist', 'component_build','concat','preprocess']);
+  grunt.registerTask('compile', ['clean:dist', 'component_build','concat','preprocess:html']);
+
+  grunt.registerTask('build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
 
   grunt.registerTask('default',['compile'])
 }

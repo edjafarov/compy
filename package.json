@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "component js boilerplate js project",
   "main": "Gruntfile.js",
   "scripts": {
@@ -20,11 +20,13 @@
     "grunt-preprocess": "latest",
     "grunt-contrib-concat": "latest",
     "connect-livereload": "latest",
+    "grunt-contrib-uglify": "latest",
     "async": "~0.2.9",
     "mocha": "~1.11.0",
     "chai": "~1.6.1",
     "ncp": "~0.4.2",
-    "fs.extra": "~1.2.1"
+    "fs.extra": "~1.2.1",
+    "grunt-contrib-cssmin": "~0.6.1"
   },
   "bin": {
     "compy": "./bin/compy"
