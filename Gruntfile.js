@@ -183,6 +183,7 @@ module.exports = function(grunt){
       pkgCheck.shift();
       args = args.concat(pkgCheck);
     }
+    if(!config.dependencies) config.dependencies = {};
     compInstall(config, {args: args, out: base + "/components"}, installed);
 
     function installed(err, deps){
