@@ -26,13 +26,15 @@ module.exports = function(grunt){
       scripts:'<%= src.js %>',
       styles: '<%= src.css %>',
       images: '<%= src.img %>',
-      fonts: '<%= src.fnt %>'
+      fonts: '<%= src.fnt %>',
+      templates: '<%= src.tmpl %>'
     },
     src:{
-      js:[ base + '/**/*.js'],
+      js:[ base + '/**/*.js', base + '/**/*.coffee'],
       css:[ base + '/**/*.css'],
       img:[ base + '/**/*.jpg', base + '/**/*.png', base + '/**/*.gif', base + '/**/*.icn'],
-      fnt:[base + '/**/*.ttf',base + '/**/*.eof']
+      fnt:[base + '/**/*.ttf',base + '/**/*.eof'],
+      tmpl: [base + '/**/*.html']
     },
     clean: {
       options:{force:true},
@@ -44,8 +46,10 @@ module.exports = function(grunt){
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
+          console.log(builder.config);
           ignoreSources(builder.config);
-        }
+        },
+        plugins:['coffee', 'templates']
       }
     },
     watch: {
@@ -59,6 +63,10 @@ module.exports = function(grunt){
       },
       css:{
         files: '<%= src.css %>',
+        tasks: ['compile']
+      },
+      html:{
+        files: '<%= src.tmpl %>',
         tasks: ['compile']
       }
     },
@@ -108,7 +116,7 @@ module.exports = function(grunt){
   })
  
   function ignoreSources(config){
-    ['images','fonts','scripts','styles'].forEach(function(asset){
+    ['images','fonts','scripts','styles','templates'].forEach(function(asset){
       var remap = [];
       if(!config[asset]) return;
       config[asset].forEach(function(filepath){
@@ -116,6 +124,7 @@ module.exports = function(grunt){
         if(/^(components|dist)\//.test(relPath)) return;
         remap.push(relPath);
       })
+      
       config[asset] = remap;
     })
   }
@@ -130,12 +139,13 @@ module.exports = function(grunt){
 
   grunt.registerTask('install', 'Install component', function(){
     var config = grunt.config('componentConfig');
-    ['images','fonts','scripts','styles'].forEach(function(asset){
+    console.log(config);
+    ['images','fonts','scripts','styles','templates'].forEach(function(asset){
       if(config[asset]){
         config[asset] = grunt.file.expand(config[asset]);
       }
     });
-   
+    console.log(config);
     var done = this.async();
     
     ignoreSources(config);
