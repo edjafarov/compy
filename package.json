@@ -11,7 +11,7 @@
   "license": "BSD",
   "dependencies": {
     "grunt-cli": "latest",
-    "component": "latest",
+    "component": "~0.16.4",
     "grunt": "latest",
     "grunt-component-build": "git://github.com/edjafarov/grunt-component-build.git",
     "grunt-contrib-connect": "latest",
