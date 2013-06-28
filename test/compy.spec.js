@@ -57,7 +57,7 @@ describe("compy should", function(){
 
   })
 
-  describe('compile', function(){
+  xdescribe('compile', function(){
     this.timeout(100000);
     before(function(done){
       cleanDir(function(){
