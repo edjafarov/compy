@@ -48,6 +48,10 @@ module.exports = function(grunt){
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
+          var pkg = grunt.file.readJSON(base + '/package.json');
+          if(pkg.compy.dependencies){
+            builder.config.dependencies = pkg.compy.dependencies;
+          }
           ignoreSources(builder.config);
         },
         plugins:['coffee', 'templates']
