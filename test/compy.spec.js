@@ -51,13 +51,13 @@ describe("compy should", function(){
       done();
     })
     it('save it as dependency in local package.json', function(done){
-      expect(require(__dirname + '/tempdata/package.json').component.dependencies).to.have.property("component/domify","*");
+      expect(require(__dirname + '/tempdata/package.json').compy.dependencies).to.have.property("component/domify","*");
       done();
     })
 
   })
 
-  xdescribe('compile', function(){
+  describe('compile', function(){
     this.timeout(100000);
     before(function(done){
       cleanDir(function(){

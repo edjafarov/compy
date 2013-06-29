@@ -9,7 +9,7 @@
   "repository": "",
   "author": "",
   "license": "BSD",
-  "component":{
+  "compy":{
     "main":"testapp.js",
     "dependencies":{
       "component/model":"*"

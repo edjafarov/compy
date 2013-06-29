@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "component js boilerplate js project",
   "main": "Gruntfile.js",
   "scripts": {

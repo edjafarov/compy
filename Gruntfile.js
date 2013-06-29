@@ -21,8 +21,8 @@ module.exports = function(grunt){
     dest: destination,
     componentConfig:{
       name: '<%= pkg.name %>',
-      main: '<%= pkg.component.main %>',
-      dependencies: '<%= pkg.component.dependencies %>',
+      main: '<%= pkg.compy.main %>',
+      dependencies: '<%= pkg.compy.dependencies %>',
       version: '<%= pkg.version %>',
       license: '<%= pkg.license %>',
       scripts:'<%= src.js %>',
@@ -99,7 +99,7 @@ module.exports = function(grunt){
         options:{
           context:{
             name: '<%= pkg.name %>',
-            main: '<%= pkg.component.main %>',
+            main: '<%= pkg.compy.main %>',
             description: '<%= pkg.description %>',
             title: '<%= pkg.title %>',
             appdest: 'app.js',
@@ -188,7 +188,7 @@ module.exports = function(grunt){
 
     function installed(err, deps){
       var pkg = grunt.file.readJSON(base + '/package.json');
-      pkg.component.dependencies = deps;
+      pkg.compy.dependencies = deps;
       grunt.file.write(base + '/package.json', JSON.stringify(pkg, null, 2));
       done();
     }
