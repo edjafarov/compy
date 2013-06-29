@@ -32,7 +32,7 @@ The configuration for compy sits in package.json inside component namespace. ```
   "description": "my awesome app",
   "main": "index.js",
   "license": "BSD",
-  "component": {
+  "compy": {
     "dependencies": {
       "component/jquery": "*",
       "component/tip": "*",
