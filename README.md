@@ -3,6 +3,8 @@ compy - rapid frontend development cli tool
 =====
 Compy is a cli that allows to raise frontend development usability to the next level. It allows you to install components and use them in your code right away. Compy uses TJ's components so it have all capabilities including local require and building the project
 
+watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk)
+
 ### features
 * installed components wire up instantly
 * local require
@@ -18,8 +20,6 @@ Compy is a cli that allows to raise frontend development usability to the next l
 * ```install[:<component>]``` - installs components from dependencies. With argument installs component, automatically saves it inside package.json
 * ```compile``` - compiles the project in ```dist``` folder
 * ```server[:watch]``` - runs simple http server for dist folder. With ```watch``` argument server watches the changes in source and recompiles the project.
-
-TODO:
 * ```build``` - builds (compiles + minifies) the project in ```dist``` folder
 
 ## config
