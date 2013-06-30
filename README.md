@@ -16,6 +16,10 @@ watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk)
 - grunt extendable
 - tbd
 
+##install
+
+```$ npm install compy -g```
+
 ## cli comands
 * ```install[:<component>]``` - installs components from dependencies. With argument installs component, automatically saves it inside package.json
 * ```compile``` - compiles the project in ```dist``` folder
