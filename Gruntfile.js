@@ -12,6 +12,10 @@ var folderDir = function folderDir(connect, point){
 }
 
 module.exports = function(grunt){
+  
+  //TODO: load base Gruntfile.js
+  //TODO: inject grunt with hacked initConfig
+  //TODO: write test
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
   var base = grunt.option('targetBase');
@@ -32,11 +36,11 @@ module.exports = function(grunt){
       templates: '<%= src.tmpl %>'
     },
     src:{
-      js:[ base + '/**/*.js', base + '/**/*.coffee'],
-      css:[ base + '/**/*.css'],
-      img:[ base + '/**/*.jpg', base + '/**/*.png', base + '/**/*.gif', base + '/**/*.icn'],
-      fnt:[base + '/**/*.ttf',base + '/**/*.eof'],
-      tmpl: [base + '/**/*.html']
+      js:[ '**/*.js', '**/*.coffee'],
+      css:[ '**/*.css'],
+      img:[ '**/*.jpg', '**/*.png', '**/*.gif', '**/*.icn'],
+      fnt:[ '**/*.ttf', '**/*.eof'],
+      tmpl: [ '**/*.html']
     },
     clean: {
       options:{force:true},
@@ -48,6 +52,7 @@ module.exports = function(grunt){
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
+          console.log(builder.config);
           var pkg = grunt.file.readJSON(base + '/package.json');
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
@@ -110,7 +115,7 @@ module.exports = function(grunt){
             appcss: 'app.css'
           }
         },
-        src:'./index.html',
+        src: __dirname + '/index.html',
         dest:'<%= dest %>/index.html'
       },
       build:{
@@ -124,7 +129,7 @@ module.exports = function(grunt){
             appcss: appCssProd
           }
         },
-        src:'./index.html',
+        src: __dirname + '/index.html',
         dest:'<%= dest %>/index.html'
       }
     },
@@ -161,14 +166,14 @@ module.exports = function(grunt){
     })
   }
   
-  grunt.loadTasks('./node_modules/grunt-component-build/tasks');
-  grunt.loadTasks('./node_modules/grunt-contrib-connect/tasks');
-  grunt.loadTasks('./node_modules/grunt-contrib-watch/tasks');
-  grunt.loadTasks('./node_modules/grunt-contrib-clean/tasks');
-  grunt.loadTasks('./node_modules/grunt-preprocess/tasks');
-  grunt.loadTasks('./node_modules/grunt-contrib-concat/tasks');
-  grunt.loadTasks('./node_modules/grunt-contrib-uglify/tasks');
-  grunt.loadTasks('./node_modules/grunt-contrib-cssmin/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-component-build/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-preprocess/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-concat/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-uglify/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-cssmin/tasks');
 
   grunt.registerTask('install', 'Install component', function(){
     var config = grunt.config('componentConfig');
