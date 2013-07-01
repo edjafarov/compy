@@ -6,7 +6,7 @@ Compy is a cli that allows to raise frontend development usability to the next l
 watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk)
 
 ### features
-* installed components wire up instantly
+* installed components wire up automatically
 * local require
 * local static server +livereload
 * componentjs packages support
@@ -27,7 +27,7 @@ watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk)
 * ```build``` - builds (compiles + minifies) the project in ```dist``` folder
 
 ## config
-The configuration for compy sits in package.json inside component namespace. ```main``` is an entry point of your app and the only required property.
+The configuration for compy sits in package.json inside compy namespace. ```main``` is an entry point of your app and the only required property.
 
 ```json
 {                                                                                                                 
