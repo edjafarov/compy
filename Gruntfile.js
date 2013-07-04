@@ -19,10 +19,11 @@ module.exports = function(grunt){
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
   var base = grunt.option('targetBase');
-  var destination = base +"/dist";
+  var destination = "./dist";
   var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
+    // this is like component.json contents for component
     componentConfig:{
       name: '<%= pkg.name %>',
       main: '<%= pkg.compy.main %>',
@@ -35,6 +36,7 @@ module.exports = function(grunt){
       fonts: '<%= src.fnt %>',
       templates: '<%= src.tmpl %>'
     },
+    // we-re taking all sources from here
     src:{
       js:[ '**/*.js', '**/*.coffee'],
       css:[ '**/*.css'],
@@ -42,23 +44,26 @@ module.exports = function(grunt){
       fnt:[ '**/*.ttf', '**/*.eof'],
       tmpl: [ '**/*.html']
     },
+    // we clean up generated source
     clean: {
       options:{force:true},
       dist:['<%= dest %>']
     },
+    // we use customized component buil grunt task
     component_build:{
       app:{
         base: base,
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
+          // we overwrite dependencies to be able to hot component reload while watch
           var pkg = grunt.file.readJSON(base + '/package.json');
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
           }
           ignoreSources(builder.config);
         },
-        plugins:['coffee', 'templates']
+        plugins:['coffee', 'templates']// use plugins for html templates and coffee
       }
     },
     watch: {
@@ -66,6 +71,7 @@ module.exports = function(grunt){
         livereload: true,
         nospawn: true
       },
+      // we watch sources independantly, but that doesn't makes much sense
       js: {
         files: '<%= src.js %>',
         tasks: ['compile']
@@ -102,6 +108,7 @@ module.exports = function(grunt){
         }
       }
     },
+    // preprocess used to build proper index.html
     preprocess:{
       html:{
         options:{
@@ -132,6 +139,7 @@ module.exports = function(grunt){
         dest:'<%= dest %>/index.html'
       }
     },
+    // concat is used to add component runner to the app
     concat: {
       dist: {
         src: ['<%= dest %>/app.js', 'tmpl/runner.js'],
@@ -151,7 +159,7 @@ module.exports = function(grunt){
       }
     }
   }
-
+  // this dark magic allows to extend Gruntfiles
   if(grunt.file.exists(base + '/Gruntfile.js')){
     var innerGruntfile = require(base + '/Gruntfile.js');
     var oldInit = grunt.initConfig;
@@ -232,9 +240,9 @@ module.exports = function(grunt){
     }
   });
   
-  grunt.registerTask('compy-compile', ['clean:dist', 'component_build','concat','preprocess:html']);
+  grunt.registerTask('compy-compile', ['clean:dist', 'component_build','concat:dist','preprocess:html']);
 
-  grunt.registerTask('compy-build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
+  grunt.registerTask('compy-build', ['clean:dist', 'component_build','concat:dist','preprocess:build', 'uglify:build', 'cssmin:build']);
 
   grunt.registerTask('compile', ['compy-compile']);
 
