@@ -20,7 +20,7 @@ module.exports = function(grunt){
   var appCssProd = 'app' + Date.now() + ".css";
   var base = grunt.option('targetBase');
   var destination = base +"/dist";
-  grunt.initConfig({
+  var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
     componentConfig:{
@@ -52,7 +52,6 @@ module.exports = function(grunt){
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
-          console.log(builder.config);
           var pkg = grunt.file.readJSON(base + '/package.json');
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
@@ -151,15 +150,36 @@ module.exports = function(grunt){
         dest: '<%= dest%>/' + appCssProd
       }
     }
-  })
- 
+  }
+
+  if(grunt.file.exists(base + '/Gruntfile.js')){
+    var innerGruntfile = require(base + '/Gruntfile.js');
+    var oldInit = grunt.initConfig;
+    var pseudoGrunt = grunt;
+    pseudoGrunt.initConfig = initConfig;
+    function initConfig(configObject){
+      for(var key in configObject){
+        compyGruntConfig[key] = configObject[key];
+      }
+      oldInit.call(this, compyGruntConfig);
+    }
+    innerGruntfile(pseudoGrunt);
+
+    var oldReg = grunt.registerTask
+    grunt.registerTask = function(){
+      if(grunt.task._tasks[arguments[0]]) return;
+      oldReg.apply(this, arguments);
+    }
+  }else{
+    grunt.initConfig(compyGruntConfig); 
+  }
   function ignoreSources(config){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
       var remap = [];
       if(!config[asset]) return;
       config[asset].forEach(function(filepath){
         var relPath = path.relative(base, filepath);
-        if(/^(components|dist)\//.test(relPath)) return;
+        if(/^(components|dist|node_modules)\//.test(relPath)) return;
         remap.push(relPath);
       })
       config[asset] = remap;
@@ -212,10 +232,15 @@ module.exports = function(grunt){
     }
   });
   
-  grunt.registerTask('compile', ['clean:dist', 'component_build','concat','preprocess:html']);
+  grunt.registerTask('compy-compile', ['clean:dist', 'component_build','concat','preprocess:html']);
 
-  grunt.registerTask('build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
+  grunt.registerTask('compy-build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
+
+  grunt.registerTask('compile', ['compy-compile']);
+
+  grunt.registerTask('build', ['compy-build']);
 
   grunt.registerTask('default',['compile'])
+
 }
 
