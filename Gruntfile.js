@@ -38,11 +38,11 @@ module.exports = function(grunt){
     },
     // we-re taking all sources from here
     src:{
-      js:[ '**/*.js', '**/*.coffee'],
-      css:[ '**/*.css'],
-      img:[ '**/*.jpg', '**/*.png', '**/*.gif', '**/*.icn'],
-      fnt:[ '**/*.ttf', '**/*.eof'],
-      tmpl: [ '**/*.html']
+      js:[ base + '/**/*.js', base+ '/**/*.coffee'],
+      css:[ base + '/**/*.css'],
+      img:[ base+ '/**/*.jpg', base+ '/**/*.png', base+ '/**/*.gif', base + '/**/*.icn'],
+      fnt:[ base+ '/**/*.ttf', base+ '/**/*.eof'],
+      tmpl: [ base+ '/**/*.html']
     },
     // we clean up generated source
     clean: {
