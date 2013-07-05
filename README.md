@@ -10,10 +10,10 @@ watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk)
 * local require
 * local static server +livereload
 * componentjs packages support
+* grunt extendable
 
 #### todo:
 - instant karma based tests
-- grunt extendable
 - tbd
 
 ##install
@@ -46,6 +46,23 @@ The configuration for compy sits in package.json inside compy namespace. ```main
   }
 }
 ```
+
+## what's about grunt?
+Compy is basically a grunt file that does all the magic. You can check it [here](https://github.com/edjafarov/compy/blob/master/Gruntfile.js)
+That also mean that is you want to use grunt in your project, you need to know some details.
+
+You can create local ```Grintfile.js``` inside your project. To run tasks though instead of ```grunt <taskname>``` you need to do ```compy <taskname>```
+
+There are ```compile``` and ```build``` tasks which you can extend/change. Original tasks have aliases ```compy-compile``` and ```compy-build``` ([src](https://github.com/edjafarov/compy/blob/588028693f1762cc1f59e9464f7824a2bdafd1ba/Gruntfile.js#L239-L241))
+
+So if you want to precompile something, your grunt file will look like:
+
+```javascript
+  ...
+  grunt.registerTask('compile',['<precompileTask>','compy-compile'])
+  ...
+```
+
 ## license
 
 MIT

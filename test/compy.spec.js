@@ -81,6 +81,10 @@ describe("compy should", function(){
       expect(fs.readFileSync(__dirname + '/tempdata/dist/app.js').toString()).to.contain('/* test string */');
       done();
     })
+    it('some.tocopy.tst file should exists in /dist folder', function(done){
+      expect(fs.existsSync(__dirname + '/tempdata/dist/some.tocopy.tst')).to.be.ok;
+      done();
+    })
   })
 
 
