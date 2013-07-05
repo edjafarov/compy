@@ -142,7 +142,7 @@ module.exports = function(grunt){
     // concat is used to add component runner to the app
     concat: {
       dist: {
-        src: ['<%= dest %>/app.js', 'tmpl/runner.js'],
+        src: ['<%= dest %>/app.js', __dirname + '/tmpl/runner.js'],
         dest: '<%= dest%>/app.js'
       }
     },
@@ -240,9 +240,9 @@ module.exports = function(grunt){
     }
   });
   
-  grunt.registerTask('compy-compile', ['clean:dist', 'component_build','concat:dist','preprocess:html']);
+  grunt.registerTask('compy-compile', ['clean:dist', 'component_build','concat','preprocess:html']);
 
-  grunt.registerTask('compy-build', ['clean:dist', 'component_build','concat:dist','preprocess:build', 'uglify:build', 'cssmin:build']);
+  grunt.registerTask('compy-build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
 
   grunt.registerTask('compile', ['compy-compile']);
 
