@@ -19,10 +19,11 @@ module.exports = function(grunt){
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
   var base = grunt.option('targetBase');
-  var destination = base +"/dist";
-  grunt.initConfig({
+  var destination = "./dist";
+  var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
+    // this is like component.json contents for component
     componentConfig:{
       name: '<%= pkg.name %>',
       main: '<%= pkg.compy.main %>',
@@ -35,6 +36,7 @@ module.exports = function(grunt){
       fonts: '<%= src.fnt %>',
       templates: '<%= src.tmpl %>'
     },
+    // we-re taking all sources from here
     src:{
       js:[ '**/*.js', '**/*.coffee'],
       css:[ '**/*.css'],
@@ -42,24 +44,26 @@ module.exports = function(grunt){
       fnt:[ '**/*.ttf', '**/*.eof'],
       tmpl: [ '**/*.html']
     },
+    // we clean up generated source
     clean: {
       options:{force:true},
       dist:['<%= dest %>']
     },
+    // we use customized component buil grunt task
     component_build:{
       app:{
         base: base,
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
         configure: function(builder){
-          console.log(builder.config);
+          // we overwrite dependencies to be able to hot component reload while watch
           var pkg = grunt.file.readJSON(base + '/package.json');
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
           }
           ignoreSources(builder.config);
         },
-        plugins:['coffee', 'templates']
+        plugins:['coffee', 'templates']// use plugins for html templates and coffee
       }
     },
     watch: {
@@ -67,6 +71,7 @@ module.exports = function(grunt){
         livereload: true,
         nospawn: true
       },
+      // we watch sources independantly, but that doesn't makes much sense
       js: {
         files: '<%= src.js %>',
         tasks: ['compile']
@@ -103,6 +108,7 @@ module.exports = function(grunt){
         }
       }
     },
+    // preprocess used to build proper index.html
     preprocess:{
       html:{
         options:{
@@ -133,9 +139,10 @@ module.exports = function(grunt){
         dest:'<%= dest %>/index.html'
       }
     },
+    // concat is used to add component runner to the app
     concat: {
       dist: {
-        src: ['<%= dest %>/app.js', 'tmpl/runner.js'],
+        src: ['<%= dest %>/app.js', __dirname + '/tmpl/runner.js'],
         dest: '<%= dest%>/app.js'
       }
     },
@@ -151,15 +158,36 @@ module.exports = function(grunt){
         dest: '<%= dest%>/' + appCssProd
       }
     }
-  })
- 
+  }
+  // this dark magic allows to extend Gruntfiles
+  if(grunt.file.exists(base + '/Gruntfile.js')){
+    var innerGruntfile = require(base + '/Gruntfile.js');
+    var oldInit = grunt.initConfig;
+    var pseudoGrunt = grunt;
+    pseudoGrunt.initConfig = initConfig;
+    function initConfig(configObject){
+      for(var key in configObject){
+        compyGruntConfig[key] = configObject[key];
+      }
+      oldInit.call(this, compyGruntConfig);
+    }
+    innerGruntfile(pseudoGrunt);
+
+    var oldReg = grunt.registerTask
+    grunt.registerTask = function(){
+      if(grunt.task._tasks[arguments[0]]) return;
+      oldReg.apply(this, arguments);
+    }
+  }else{
+    grunt.initConfig(compyGruntConfig); 
+  }
   function ignoreSources(config){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
       var remap = [];
       if(!config[asset]) return;
       config[asset].forEach(function(filepath){
         var relPath = path.relative(base, filepath);
-        if(/^(components|dist)\//.test(relPath)) return;
+        if(/^(components|dist|node_modules)\//.test(relPath)) return;
         remap.push(relPath);
       })
       config[asset] = remap;
@@ -212,10 +240,15 @@ module.exports = function(grunt){
     }
   });
   
-  grunt.registerTask('compile', ['clean:dist', 'component_build','concat','preprocess:html']);
+  grunt.registerTask('compy-compile', ['clean:dist', 'component_build','concat','preprocess:html']);
 
-  grunt.registerTask('build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
+  grunt.registerTask('compy-build', ['clean:dist', 'component_build','concat','preprocess:build', 'uglify', 'cssmin']);
+
+  grunt.registerTask('compile', ['compy-compile']);
+
+  grunt.registerTask('build', ['compy-build']);
 
   grunt.registerTask('default',['compile'])
+
 }
 
