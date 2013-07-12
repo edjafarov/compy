@@ -1,20 +1,20 @@
 [![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
-compy - rapid frontend development cli tool
+compy - lightweight single app builder/compiller
 =====
-Compy is a cli that allows to raise frontend development usability to the next level. It allows you to install components and use them in your code right away. Compy uses TJ's components so it have all capabilities including local require and building the project
+Compy is a lightweight approach for developing single page apps (framework/lib agnostic). 
+Based on TJ's component.io package manager it allows you to install components and use them in your code right away.
+Compy makes your development fun by:
 
-watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk)
+* allowing you to use installed components by just requiring them like in node.js
+* providing local ```require```
+* seting up local static server with livereload
+* supporting componentjs packages
+* being flexible and grunt extendable
 
-### features
-* installed components wire up automatically
-* local require
-* local static server +livereload
-* componentjs packages support
-* grunt extendable
+watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details
 
 #### todo:
 - instant karma based tests
-- tbd
 
 ##install
 
