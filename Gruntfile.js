@@ -52,7 +52,7 @@ module.exports = function(grunt){
       dist:['<%= dest %>']
     },
     // we use customized component build grunt task
-    component_build:{
+    component_constructor:{
       app:{
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
@@ -180,7 +180,6 @@ module.exports = function(grunt){
         browsers:["PhantomJS"],
         colors: true,
         configFile: __dirname + '/tmpl/karma.config.js',
-        //logLevel: 'LOG_DEBUG',
         reporters:['dots'],
         singleRun: true
       }
@@ -223,7 +222,7 @@ module.exports = function(grunt){
     })
   }
   
-  grunt.loadTasks(__dirname + '/node_modules/grunt-component-build/tasks');
+  grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
   grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
   grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
   grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
@@ -282,11 +281,11 @@ module.exports = function(grunt){
     }
   });
   
-  grunt.registerTask('compy-compile', ['clean:dist', 'component_build:app','concat:dist','preprocess:html']);
+  grunt.registerTask('compy-compile', ['clean:dist', 'component_constructor:app','concat:dist','preprocess:html']);
 
-  grunt.registerTask('compy-build', ['clean:dist', 'component_build:app','concat:dist','preprocess:build', 'uglify', 'cssmin']);
+  grunt.registerTask('compy-build', ['clean:dist', 'component_constructor:app','concat:dist','preprocess:build', 'uglify', 'cssmin']);
 
-  grunt.registerTask('compy-test', ['clean:dist', 'component_build:test','generate-tests-runner' ,'karma'])
+  grunt.registerTask('compy-test', ['clean:dist', 'component_constructor:test','generate-tests-runner' ,'karma'])
 
   grunt.registerTask('compile', ['compy-compile']);
 
