@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "component js boilerplate js project",
   "main": "Gruntfile.js",
   "scripts": {
@@ -11,9 +11,9 @@
   "license": "BSD",
   "dependencies": {
     "grunt-cli": "latest",
-    "component": "~0.16.4",
+    "component": "latest",
     "grunt": "latest",
-    "grunt-component-build": "git://github.com/edjafarov/grunt-component-build.git",
+    "grunt-component-constructor": "latest",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-watch": "latest",
@@ -26,7 +26,8 @@
     "chai": "~1.6.1",
     "ncp": "~0.4.2",
     "fs.extra": "~1.2.1",
-    "grunt-contrib-cssmin": "~0.6.1"
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-karma": "~0.4.5"
   },
   "bin": {
     "compy": "./bin/compy"
