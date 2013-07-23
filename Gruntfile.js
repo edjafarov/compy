@@ -63,7 +63,7 @@ module.exports = function(grunt){
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
           }
-          ignoreSources(builder.config, ['tests']);
+          ignoreSources(builder.config, grunt.config('src.tests'));
         },
         plugins:['coffee', 'templates']// use plugins for html templates and coffee
       },
@@ -207,13 +207,18 @@ module.exports = function(grunt){
   }else{
     grunt.initConfig(compyGruntConfig); 
   }
-  function ignoreSources(config, ignoreArray){
+  function ignoreSources(config, ignorePatterns){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
-      var ignore = ['components','dist','node_modules'].concat(ignoreArray||[]);
+      var ignore = ['components','dist','node_modules'];
       var testFor = new RegExp('^(' + ignore.join('|') + ')\\/');
+      var ignoreFiles = [];
+      if(ignorePatterns){
+        ignoreFiles = ignoreFiles.concat(grunt.file.expand(ignorePatterns));
+      }
       var remap = [];
       if(!config[asset]) return;
       config[asset].forEach(function(filepath){
+        if(!!~ignoreFiles.indexOf(filepath)) return;
         var relPath = path.relative(base, filepath);
         if(testFor.test(relPath)) return;
         remap.push(relPath);
