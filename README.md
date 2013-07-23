@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
-compy - lightweight single app builder/compiller
+compy - lightweight app builder/compiller
 =====
 Compy is a lightweight approach for developing single page apps (framework/lib agnostic). 
 Based on TJ's component.io package manager it allows you to install components and use them in your code right away.
