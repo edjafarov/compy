@@ -3,6 +3,8 @@ var spawn = require('child_process').spawn;
 var expect = require('chai').expect;
 var nock = require('nock');
 var path = require('path');
+var request = require('request');
+
 
 var fake = !process.env.NOCK_OFF;
 
@@ -100,7 +102,52 @@ describe("compy should", function(){
       done();
     })
   })
+
+
+
+  describe('set static server', function(){
+    this.timeout(100000);
+    var github = nock('https://raw.github.com:443')
+    .get('/component/model/master/component.json')
+    .reply(200,JSON.stringify({}),{'content-type': 'text/plain; charset=utf-8'});
+
+    before(function(done){
+      cleanDir(function(){
+        prepareDir(function(){
+          runCompyWith('install', function(){
+            runCompyWith('compile', function(){
+              runCompyWith('server');
+              done();
+            });
+          });
+        });
+      })
+    })
+    it('should ping localhost port 8080', function(done){
+      request.get("http://localhost:8080", function(err, res, body){
+        expect(res).to.have.property("statusCode", 200);
+        expect(body).to.be.ok;
+        request.get("http://localhost:8080/app.js", gotJs);
+      })
+      function gotJs(err, res, body){
+        expect(res).to.have.property("statusCode", 200);
+        expect(body).to.be.ok;
+        request.get("http://localhost:8080/app.css", gotCss);
+      }
+      function gotCss(err, res, body){
+        expect(res).to.have.property("statusCode", 200);
+        expect(body).to.be.ok;
+        done();
+      }
+    })
+  })
 })
+
+
+
+
+
+
 
 
 function runCompyWith(comands, done){
@@ -121,7 +168,7 @@ function runCompyWith(comands, done){
           delete require.cache[reqModule];
         }
       })
-      return done();
+      return done && done();
     }
     require('../bin/compy');
     return;

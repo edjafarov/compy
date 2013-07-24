@@ -5,8 +5,8 @@
   "main": "Gruntfile.js",
   "scripts": {
     "test": "unset NOCK_OFF;node ./node_modules/.bin/mocha test/compy.spec.js;export NOCK_OFF=true;node ./node_modules/.bin/mocha test/compy.spec.js",
-    "t":"unset NOCK_OFF;node ./node_modules/.bin/mocha test/compy.spec.js",
-    "fullTest":"export NOCK_OFF=true;node ./node_modules/.bin/mocha test/compy.spec.js"
+    "t": "unset NOCK_OFF;node ./node_modules/.bin/mocha test/compy.spec.js",
+    "fullTest": "export NOCK_OFF=true;node ./node_modules/.bin/mocha test/compy.spec.js"
   },
   "repository": "",
   "author": "Eldar Djafarov <djkojb@gmail.com>",
@@ -30,7 +30,8 @@
     "fs.extra": "~1.2.1",
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-karma": "~0.4.5",
-    "nock": "~0.22.0"
+    "nock": "~0.22.0",
+    "request": "~2.25.0"
   },
   "bin": {
     "compy": "./bin/compy"
