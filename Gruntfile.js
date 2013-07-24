@@ -42,11 +42,11 @@ module.exports = function(grunt){
     },
     // we-re taking all sources from here
     src:{
-      scripts:[ base + '/**/*.js'],
-      styles:[ base + '/**/*.css'],
+      scripts:[ base + '/**/*.js', "!" + base +"/**/node_modules/**"],
+      styles:[ base + '/**/*.css', "!" + base +"/**/node_modules/**"],
       images:[ base+ '/**/*.jpg', base+ '/**/*.png', base+ '/**/*.gif', base + '/**/*.icn'],
       fonts:[ base+ '/**/*.ttf', base+ '/**/*.eof'],
-      templates: [ base+ '/**/*.html'],
+      templates: [ base+ '/**/*.html', "!" + base +"/**/node_modules/**"],
       tests:[ base + '/**/*.spec.js']
     },
     // we clean up generated source

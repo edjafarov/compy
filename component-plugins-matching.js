@@ -72,7 +72,7 @@ function matchModules(config, plugins){
       for(var type in effectHash[plugin].ext){
         if(!config.src[type]) config.src[type] = [];
         effectHash[plugin].ext[type].forEach(function(ext){
-          config.src[type].push(config.targetBase + "/**/*" + ext);
+          config.src[type].unshift(config.targetBase + "/**/*" + ext);
         })
       }
     }
