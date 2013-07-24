@@ -4,7 +4,9 @@
   "description": "component js boilerplate js project",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "node ./node_modules/.bin/mocha test/compy.spec.js"
+    "test": "unset NOCK_OFF;node ./node_modules/.bin/mocha test/compy.spec.js;export NOCK_OFF=true;node ./node_modules/.bin/mocha test/compy.spec.js",
+    "t":"unset NOCK_OFF;node ./node_modules/.bin/mocha test/compy.spec.js",
+    "fullTest":"export NOCK_OFF=true;node ./node_modules/.bin/mocha test/compy.spec.js"
   },
   "repository": "",
   "author": "Eldar Djafarov <djkojb@gmail.com>",

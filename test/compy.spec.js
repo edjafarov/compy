@@ -3,17 +3,17 @@ var spawn = require('child_process').spawn;
 var expect = require('chai').expect;
 var nock = require('nock');
 var path = require('path');
-process.env.fake = true;
-var fake = process.env.fake;
+
+var fake = !process.env.NOCK_OFF;
 
 describe("compy should", function(){
   after(cleanDir);
 
   describe('install', function(){
     this.timeout(100000);
-    /*var github = nock('https://raw.github.com')
+    var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
-    .reply(200,{});*/
+    .reply(200,JSON.stringify({}),{'content-type': 'text/plain; charset=utf-8'});
     before(function(done){
       cleanDir(function(){
         prepareDir(function(){
@@ -37,6 +37,10 @@ describe("compy should", function(){
 
   describe('install <component name> - component/domify', function(){
     this.timeout(100000);
+    var github = nock('https://raw.github.com:443')
+    .get('/component/domify/master/component.json')
+    .reply(200,JSON.stringify({}),{'content-type': 'text/plain; charset=utf-8'});
+
     before(function(done){
       cleanDir(function(){
         prepareDir(function(){
@@ -65,6 +69,10 @@ describe("compy should", function(){
 
   describe('compile', function(){
     this.timeout(100000);
+    var github = nock('https://raw.github.com:443')
+    .get('/component/model/master/component.json')
+    .reply(200,JSON.stringify({}),{'content-type': 'text/plain; charset=utf-8'});
+
     before(function(done){
       cleanDir(function(){
         prepareDir(function(){
@@ -92,10 +100,6 @@ describe("compy should", function(){
       done();
     })
   })
-
-
-
-  
 })
 
 
@@ -120,7 +124,6 @@ function runCompyWith(comands, done){
       return done();
     }
     require('../bin/compy');
-
     return;
   }
   var compy = spawn('node', args, {cwd: __dirname + "/tempdata" });
