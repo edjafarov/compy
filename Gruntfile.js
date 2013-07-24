@@ -93,7 +93,7 @@ module.exports = function(grunt){
       },
       // we watch sources independantly, but that doesn't makes much sense
       js: {
-        files: '<%= src.scrips %>',
+        files: '<%= src.scripts %>',
         tasks: ['compile']
       },
       css:{
@@ -191,19 +191,24 @@ module.exports = function(grunt){
   }
   var matchPlugins = require('./component-plugins-matching.js');
   matchPlugins(compyGruntConfig, getPlugins(base));
+
   function usePlugins(baseDir, builder){
     var plugins = getPlugins(baseDir);
     plugins.forEach(function(plugin){
-      console.log(baseDir + "/node_modules/" + plugin);
-      builder.use(require(baseDir + "/node_modules/" + plugin));
+      var pluginModule = require(baseDir + "/node_modules/" + plugin);
+      if(matchPlugins.config[plugin] && matchPlugins.config[plugin].run){
+        return matchPlugins.config[plugin].run(pluginModule, builder);
+      }
+      builder.use(pluginModule);
     })
   }
   /*
   * getPlugins is getting plugins from users project node_modules folder
   */
   function getPlugins(baseDir){
-    var nodeModules = fs.readdirSync(baseDir + "/node_modules");
     var componentPlugins = [];
+    if(!fs.existsSync(baseDir + "/node_modules")) return componentPlugins;
+    var nodeModules = fs.readdirSync(baseDir + "/node_modules");
     nodeModules.forEach(function(module){
       if(!/^component-/.test(module)) return;
       componentPlugins.push(module);
@@ -326,6 +331,5 @@ module.exports = function(grunt){
   grunt.registerTask('test', ['compy-test']);
 
   grunt.registerTask('default',['compile'])
-
 }
 
