@@ -1,13 +1,19 @@
 var fs = require('fs.extra');
 var spawn = require('child_process').spawn;
 var expect = require('chai').expect;
-
+var nock = require('nock');
+var path = require('path');
+process.env.fake = true;
+var fake = process.env.fake;
 
 describe("compy should", function(){
   after(cleanDir);
 
   describe('install', function(){
     this.timeout(100000);
+    /*var github = nock('https://raw.github.com')
+    .get('/component/model/master/component.json')
+    .reply(200,{});*/
     before(function(done){
       cleanDir(function(){
         prepareDir(function(){
@@ -95,7 +101,28 @@ describe("compy should", function(){
 
 function runCompyWith(comands, done){
   var args = [__dirname + '/../bin/compy'].concat(comands);
-  
+  if(fake){
+    var oldDir = process.cwd();
+    process.chdir(__dirname + "/tempdata");
+    var oldArgv = process.argv;
+    process.argv = ['node','mocha'].concat(comands);
+    var oldExit = process.exit;
+    var oldRequire = Object.keys(require.cache);
+    process.exit = function(code){
+      process.exit = oldExit;
+      process.chdir(oldDir);
+      process.argv = oldArgv;
+      Object.keys(require.cache).forEach(function(reqModule){
+        if(!~oldRequire.indexOf(reqModule)){
+          delete require.cache[reqModule];
+        }
+      })
+      return done();
+    }
+    require('../bin/compy');
+
+    return;
+  }
   var compy = spawn('node', args, {cwd: __dirname + "/tempdata" });
   compy.on('close', function(){
     done()

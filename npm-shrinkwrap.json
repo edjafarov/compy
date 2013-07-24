@@ -1213,6 +1213,16 @@
           }
         }
       }
+    },
+    "nock": {
+      "version": "0.22.0",
+      "from": "nock@",
+      "dependencies": {
+        "propagate": {
+          "version": "0.2.2",
+          "from": "propagate@0.2.x"
+        }
+      }
     }
   }
 }
