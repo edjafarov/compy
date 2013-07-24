@@ -2,6 +2,7 @@ var util = require('util');
 var path = require('path');
 var spawn = require('child_process').spawn;
 var compInstall = require('./component_install.js');
+var fs = require('fs');
 
 var folderMount = function folderMount(connect, point) {
     return connect.static(path.resolve(point));
@@ -21,9 +22,11 @@ module.exports = function(grunt){
   var base = grunt.option('targetBase');
   process.env.targetBase = base;
   var destination = "./dist";
+  
   var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
+    targetBase: base,
     // this is like component.json contents for component
     componentConfig:{
       name: '<%= pkg.name %>',
@@ -31,19 +34,19 @@ module.exports = function(grunt){
       dependencies: '<%= pkg.compy.dependencies %>',
       version: '<%= pkg.version %>',
       license: '<%= pkg.license %>',
-      scripts:'<%= src.js %>',
-      styles: '<%= src.css %>',
-      images: '<%= src.img %>',
-      fonts: '<%= src.fnt %>',
-      templates: '<%= src.tmpl %>'
+      scripts:'<%= src.scripts %>',
+      styles: '<%= src.styles %>',
+      images: '<%= src.images %>',
+      fonts: '<%= src.fonts %>',
+      templates: '<%= src.templates %>'
     },
     // we-re taking all sources from here
     src:{
-      js:[ base + '/**/*.js', base+ '/**/*.coffee'],
-      css:[ base + '/**/*.css'],
-      img:[ base+ '/**/*.jpg', base+ '/**/*.png', base+ '/**/*.gif', base + '/**/*.icn'],
-      fnt:[ base+ '/**/*.ttf', base+ '/**/*.eof'],
-      tmpl: [ base+ '/**/*.html'],
+      scripts:[ base + '/**/*.js'],
+      styles:[ base + '/**/*.css'],
+      images:[ base+ '/**/*.jpg', base+ '/**/*.png', base+ '/**/*.gif', base + '/**/*.icn'],
+      fonts:[ base+ '/**/*.ttf', base+ '/**/*.eof'],
+      templates: [ base+ '/**/*.html'],
       tests:[ base + '/**/*.spec.js']
     },
     // we clean up generated source
@@ -63,9 +66,10 @@ module.exports = function(grunt){
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
           }
+          
           ignoreSources(builder.config, grunt.config('src.tests'));
-        },
-        plugins:['coffee', 'templates']// use plugins for html templates and coffee
+          usePlugins(base, builder);
+        }
       },
       test: {
         output: '<%= dest %>',
@@ -78,8 +82,8 @@ module.exports = function(grunt){
             builder.config.dependencies = pkg.compy.dependencies;
           }
           ignoreSources(builder.config);
-        },
-        plugins:['coffee', 'templates']// use plugins for html templates and coffee
+          usePlugins(base, builder);
+        }
       }
     },
     watch: {
@@ -89,15 +93,15 @@ module.exports = function(grunt){
       },
       // we watch sources independantly, but that doesn't makes much sense
       js: {
-        files: '<%= src.js %>',
+        files: '<%= src.scrips %>',
         tasks: ['compile']
       },
       css:{
-        files: '<%= src.css %>',
+        files: '<%= src.styles %>',
         tasks: ['compile']
       },
       html:{
-        files: '<%= src.tmpl %>',
+        files: '<%= src.templates %>',
         tasks: ['compile']
       }
     },
@@ -185,6 +189,29 @@ module.exports = function(grunt){
       }
     }
   }
+  var matchPlugins = require('./component-plugins-matching.js');
+  matchPlugins(compyGruntConfig, getPlugins(base));
+  function usePlugins(baseDir, builder){
+    var plugins = getPlugins(baseDir);
+    plugins.forEach(function(plugin){
+      console.log(baseDir + "/node_modules/" + plugin);
+      builder.use(require(baseDir + "/node_modules/" + plugin));
+    })
+  }
+  /*
+  * getPlugins is getting plugins from users project node_modules folder
+  */
+  function getPlugins(baseDir){
+    var nodeModules = fs.readdirSync(baseDir + "/node_modules");
+    var componentPlugins = [];
+    nodeModules.forEach(function(module){
+      if(!/^component-/.test(module)) return;
+      componentPlugins.push(module);
+    });
+    return componentPlugins;
+  }
+
+
   // this dark magic allows to extend Gruntfiles
   if(grunt.file.exists(base + '/Gruntfile.js')){
     var innerGruntfile = require(base + '/Gruntfile.js');
