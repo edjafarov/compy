@@ -69,7 +69,7 @@ describe("compy should", function(){
 
   })
 
-  describe('compile', function(){
+  describe('compile #compile', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
@@ -97,15 +97,20 @@ describe("compy should", function(){
       expect(fs.readFileSync(__dirname + '/tempdata/dist/app.js').toString()).to.contain('/* test string */');
       done();
     })
-    it('some.tocopy.tst file should exists in /dist folder', function(done){
+    it('some.tocopy.tst file should exists in /dist folder [local GRUNTFILE test]', function(done){
       expect(fs.existsSync(__dirname + '/tempdata/dist/some.tocopy.tst')).to.be.ok;
+      done();
+    })
+
+    it('.coffee script files should be compiled in javascript', function(done){
+      expect(fs.readFileSync(__dirname + '/tempdata/dist/app.js').toString()).to.contain('if (opposite_check) {');
       done();
     })
   })
 
 
 
-  describe('set static server', function(){
+  xdescribe('set static server', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
