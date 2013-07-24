@@ -66,6 +66,7 @@ module.exports = function(grunt){
           if(pkg.compy.dependencies){
             builder.config.dependencies = pkg.compy.dependencies;
           }
+          
           ignoreSources(builder.config, grunt.config('src.tests'));
           usePlugins(base, builder);
         }
@@ -193,6 +194,7 @@ module.exports = function(grunt){
   function usePlugins(baseDir, builder){
     var plugins = getPlugins(baseDir);
     plugins.forEach(function(plugin){
+      console.log(baseDir + "/node_modules/" + plugin);
       builder.use(require(baseDir + "/node_modules/" + plugin));
     })
   }
@@ -203,7 +205,7 @@ module.exports = function(grunt){
     var nodeModules = fs.readdirSync(baseDir + "/node_modules");
     var componentPlugins = [];
     nodeModules.forEach(function(module){
-      if(!/^component/.test(module)) return;
+      if(!/^component-/.test(module)) return;
       componentPlugins.push(module);
     });
     return componentPlugins;
