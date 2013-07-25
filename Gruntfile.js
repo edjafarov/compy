@@ -42,12 +42,12 @@ module.exports = function(grunt){
     },
     // we-re taking all sources from here
     src:{
-      scripts:[ base + '/**/*.js', "!" + base +"/**/node_modules/**"],
-      styles:[ base + '/**/*.css', "!" + base +"/**/node_modules/**"],
-      images:[ base+ '/**/*.jpg', base+ '/**/*.png', base+ '/**/*.gif', base + '/**/*.icn'],
-      fonts:[ base+ '/**/*.ttf', base+ '/**/*.eof'],
-      templates: [ base+ '/**/*.html', "!" + base +"/**/node_modules/**"],
-      tests:[ base + '/**/*.spec.js']
+      scripts:[ base + '{/!(node_modules|dist|components)/**/*.js,/*.js}'],
+      styles:[ base + '{/!(node_modules|dist|components)/**/*.css,/*.css}'],
+      images:[ base+ '/!(node_modules|dist|components)/**/*.{jpg,png,gif,icn}', base+ '/*.{jpg,png,gif,icn}'],
+      fonts:[ base+ '/!(node_modules|dist|components)/**/*.{ttf,eof}', base + '/*.{ttf,eof}'],
+      templates: [ base+ '{/!(node_modules|dist|components)/**/*.html,/*.html}'],
+      tests:[ base + '{/!(node_modules|dist|components)/**/*.spec.js,/*.spec.js}']
     },
     // we clean up generated source
     clean: {
