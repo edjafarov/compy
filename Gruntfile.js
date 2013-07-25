@@ -56,33 +56,77 @@ module.exports = function(grunt){
     },
     // we use customized component build grunt task
     component_constructor:{
-      app:{
+      options:{
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
-        base: base,
-        configure: function(builder){
-          // we overwrite dependencies to be able to hot component reload while watch
-          var pkg = grunt.file.readJSON(base + '/package.json');
-          if(pkg.compy.dependencies){
-            builder.config.dependencies = pkg.compy.dependencies;
+        base: base
+      },
+      app:{
+        options:{
+         configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config, grunt.config('src.tests'));
+            usePlugins(base, builder);
           }
-          
-          ignoreSources(builder.config, grunt.config('src.tests'));
-          usePlugins(base, builder);
         }
       },
       test: {
-        output: '<%= dest %>',
-        config: '<%= componentConfig %>',
-        base: base,
-        configure: function(builder){
-          // we overwrite dependencies to be able to hot component reload while watch
-          var pkg = grunt.file.readJSON(base + '/package.json');
-          if(pkg.compy.dependencies){
-            builder.config.dependencies = pkg.compy.dependencies;
+        options:{
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
           }
-          ignoreSources(builder.config);
-          usePlugins(base, builder);
+        }
+      },
+      styles_dev: {
+        options:{
+          assetType: 'styles',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
+          }
+        }
+      },
+      scripts_dev: {
+        options:{
+          assetType: 'scripts',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
+          }
+        }
+      },
+      templates_dev: {
+        options:{
+          assetType: 'templates',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
+          }
         }
       }
     },
