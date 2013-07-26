@@ -63,7 +63,8 @@ module.exports = function(grunt){
       },
       app:{
         options:{
-         configure: function(builder){
+          target: 'app',
+          configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
             var pkg = grunt.file.readJSON(base + '/package.json');
             if(pkg.compy.dependencies){
@@ -89,6 +90,7 @@ module.exports = function(grunt){
       },
       styles_dev: {
         options:{
+          name: 'app',
           assetType: 'styles',
           configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
@@ -103,6 +105,7 @@ module.exports = function(grunt){
       },
       scripts_dev: {
         options:{
+          name: 'app',
           assetType: 'scripts',
           configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
@@ -117,6 +120,7 @@ module.exports = function(grunt){
       },
       templates_dev: {
         options:{
+          name: 'app',
           assetType: 'templates',
           configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
@@ -138,15 +142,15 @@ module.exports = function(grunt){
       // we watch sources independantly, but that doesn't makes much sense
       js: {
         files: '<%= src.scripts %>',
-        tasks: ['compile']
+        tasks: ['component_constructor:scripts_dev','concat:dist']
       },
       css:{
         files: '<%= src.styles %>',
-        tasks: ['compile']
+        tasks: ['component_constructor:styles_dev']
       },
       html:{
         files: '<%= src.templates %>',
-        tasks: ['compile']
+        tasks: ['component_constructor:templates_dev','concat:dist']
       }
     },
     connect: {
