@@ -14,15 +14,16 @@ var folderDir = function folderDir(connect, point){
 
 module.exports = function(grunt){
   var karmaAdapters = __dirname + "/node_modules/grunt-karma/node_modules/karma/adapter";
-  //TODO: load base Gruntfile.js
-  //TODO: inject grunt with hacked initConfig
-  //TODO: write test
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
+  var indexTemplate = __dirname + '/index.html';
   var base = grunt.option('targetBase');
   process.env.targetBase = base;
   var destination = "./dist";
-  
+  if(grunt.file.exists(base + "/index.html")){
+    indexTemplate = base + "/index.html";
+  }
+
   var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
@@ -46,7 +47,7 @@ module.exports = function(grunt){
       styles:[ base + '{/!(node_modules|dist|components)/**/*.css,/*.css}'],
       images:[ base+ '/!(node_modules|dist|components)/**/*.{jpg,png,gif,icn}', base+ '/*.{jpg,png,gif,icn}'],
       fonts:[ base+ '/!(node_modules|dist|components)/**/*.{ttf,eof}', base + '/*.{ttf,eof}'],
-      templates: [ base+ '{/!(node_modules|dist|components)/**/*.html,/*.html}'],
+      templates: [ base+ '{/!(node_modules|dist|components)/**/*.html,/*.html}', '!' + base + '/index.html'],
       tests:[ base + '{/!(node_modules|dist|components)/**/*.spec.js,/*.spec.js}']
     },
     // we clean up generated source
@@ -189,7 +190,7 @@ module.exports = function(grunt){
             appcss: 'app.css'
           }
         },
-        src: __dirname + '/index.html',
+        src: indexTemplate,
         dest:'<%= dest %>/index.html'
       },
       build:{
@@ -203,7 +204,7 @@ module.exports = function(grunt){
             appcss: appCssProd
           }
         },
-        src: __dirname + '/index.html',
+        src: indexTemplate,
         dest:'<%= dest %>/index.html'
       }
     },
