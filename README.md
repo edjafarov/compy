@@ -1,30 +1,27 @@
 [![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
 compy - lightweight single app builder/compiller
 =====
-Compy is a lightweight approach for developing single page apps (framework/lib agnostic). 
-Based on TJ's component.io package manager it allows you to install components and use them in your code right away.
+Compy is a lightweight approach for developing web apps (framework/lib agnostic). Based on TJ's [component](https://github.com/component/component) package manager it allows you to install components and use them in your code right away.
 Compy makes your development fun by:
 
-* allowing you to use installed components by just requiring them like in node.js
+* allowing you to use installed components without any configurations by just requiring them.
 * providing local ```require```
-* seting up local static server with livereload
-* supporting componentjs packages
+* supporting coffeescript, sass, jade and other plugins
+* giving you livereload with simple static server
+* setting up karma runner
 * being flexible and grunt extendable
 
-watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details
-
-#### todo:
-- instant karma based tests
+watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details [some of functionality was changed in 0.1.3]
 
 ##install
 
 ```$ npm install compy -g```
 
 ## cli comands
-* ```install[:<component>]``` - installs components from dependencies. With argument installs component, automatically saves it inside package.json
+* ```install <component>``` - installs components from dependencies. With argument installs component, automatically saves it inside package.json
 * ```compile``` - compiles the project in ```dist``` folder
-* ```server[:watch]``` - runs simple http server for dist folder. With ```watch``` argument server watches the changes in source and recompiles the project.
 * ```build``` - builds (compiles + minifies) the project in ```dist``` folder
+* ```server watch``` - runs simple http server for dist folder. With ```watch``` argument server watches the changes in source and recompiles the project.
 
 ## config
 The configuration for compy sits in package.json inside compy namespace. ```main``` is an entry point of your app and the only required property.
@@ -38,9 +35,7 @@ The configuration for compy sits in package.json inside compy namespace. ```main
   "license": "BSD",
   "compy": {
     "dependencies": {
-      "component/jquery": "*",
-      "component/tip": "*",
-      "component/s3": "*"
+      "component/jquery": "*"
     },
     "main": "app.js"
   }
