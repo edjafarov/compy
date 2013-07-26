@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
+[![NPM version](https://badge.fury.io/js/compy.png)](http://badge.fury.io/js/compy)
 [![Dependency Status](https://gemnasium.com/edjafarov/compy.png)](https://gemnasium.com/edjafarov/compy)
+[![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
 compy - lightweight app builder/compiller
 =====
 Compy is a lightweight approach for developing single page apps (framework/lib agnostic). 
