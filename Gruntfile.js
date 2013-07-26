@@ -18,6 +18,7 @@ module.exports = function(grunt){
   var appCssProd = 'app' + Date.now() + ".css";
   var indexTemplate = __dirname + '/index.html';
   var base = grunt.option('targetBase');
+  var cmd = grunt.option('cmd').toString();
   process.env.targetBase = base;
   var destination = "./dist";
   if(grunt.file.exists(base + "/index.html")){
@@ -308,15 +309,15 @@ module.exports = function(grunt){
     })
   }
   
-  grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-preprocess/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-concat/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-uglify/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-cssmin/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-karma/tasks');
+  if(!!~['build','compile','server','test','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
+  if(!!~['server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
+  if(!!~['server','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
+  if(!!~['build','compile'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
+  if(!!~['build','compile'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-preprocess/tasks');
+  if(!!~['build','compile','server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-concat/tasks');
+  if(!!~['build'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-uglify/tasks');
+  if(!!~['build'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-cssmin/tasks');
+  if(!!~['test'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-karma/tasks');
 
 
   grunt.registerTask('install', 'Install component', function(){
