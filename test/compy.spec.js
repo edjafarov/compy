@@ -46,7 +46,7 @@ describe("compy should", function(){
     before(function(done){
       cleanDir(function(){
         prepareDir(function(){
-          runCompyWith(['install:component/domify'], done);
+          runCompyWith(['install','component/domify'], done);
         });
       })
     })

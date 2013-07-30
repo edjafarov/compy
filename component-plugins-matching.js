@@ -1,53 +1,83 @@
 var effectHash = {
   "component-stylus-plugin":{
-    styles:[".styl"]
+    ext:{
+      styles:[".styl"]
+    }
   },
   "component-jade":{
-    templates:[".jade"]
+    ext:{
+      templates:[".jade"]
+    }
   },
   "component-coffee":{
-    scripts:[".coffee"]
+    ext:{
+      scripts:[".coffee"]
+    }
   },
   "component-sass":{
-    styles:[".scss"]
+    ext:{
+      styles:[".scss"]
+    }
   },
   "component-builder-handlebars":{
-    templates:[".hbl"]
+    ext:{
+      templates:[".hbs"]
+    },
+    run: function(plugin, builder){
+      builder.use(plugin());
+    }
   },
   "component-hogan":{
-    templates:[".stache",".mustache"]
+    ext:{
+      templates:[".stache",".mustache"]
+    }
   },
   "component-sass":{
-    styles:[".scss"]
+    ext:{
+      styles:[".scss"]
+    }
   },
   "component-json":{
-    files:[".json"]
+    ext:{
+      files:[".json"]
+    }
   },
   "component-roole":{
-    styles:[".roo"]
+    ext:{
+      styles:[".roo"]
+    }
   },
   "component-less":{
-    styles:[".less"]
+    ext:{
+      styles:[".less"]
+    }
   },
   "component-markdown":{
-    templates:[".md",".markdown"]
+    ext:{
+      templates:[".md",".markdown"]
+    },
+    run: function(plugin, builder){
+      builder.use(plugin());
+    }
   },
   "component-html":{
-    templates:[".html"]
+    ext:{
+      templates:[".html"]
+    }
   }
 }
 function matchModules(config, plugins){
   plugins.forEach(function(plugin){
     if(effectHash[plugin]){
-      for(var type in effectHash[plugin]){
+      for(var type in effectHash[plugin].ext){
         if(!config.src[type]) config.src[type] = [];
-        effectHash[plugin][type].forEach(function(ext){
-          config.src[type].push(config.targetBase + "/**/*" + ext);
+        effectHash[plugin].ext[type].forEach(function(ext){
+          config.src[type].unshift(config.targetBase + '{/!(node_modules|dist|components)/**/*' + ext + ',/*' + ext + '}');
         })
       }
     }
   });
 }
-
+matchModules.config = effectHash;
 module.exports = matchModules;
 

@@ -31,7 +31,8 @@
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-karma": "~0.4.5",
     "nock": "~0.22.0",
-    "request": "~2.25.0"
+    "request": "~2.25.0",
+    "commander": "~2.0.0"
   },
   "bin": {
     "compy": "./bin/compy"

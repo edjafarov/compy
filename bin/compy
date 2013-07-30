@@ -1,7 +1,36 @@
 #!/usr/bin/env node
-
+var program = require('commander');
 var path = require('path');
 var fs   = require('fs');
 var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
+var packageJson = require(root + '/package.json');
 
-require('grunt').cli({gruntfile: root + "/Gruntfile.js", targetBase: process.cwd(), base: process.cwd()});
+program
+  .version(packageJson.version)
+  .usage('<command> [options]')
+  
+
+program.on('--help', function(){
+  console.log('  Commands:');
+  console.log();
+  console.log('    install [name ...]      install dependencies or component');
+  console.log('    compile                 compile app (in dist folder by default)');
+  console.log('    build                   build the app (compile and minify sources)');
+  console.log('    server [watch]          run static server. If "watch" option enabled - watch changes, recompile and push livereload');
+  console.log('    test                    run karma tests');
+  console.log('    watch                   watch and rebuild assets on change');
+  console.log();
+  console.log();
+}).parse(process.argv);
+
+var cmd = program.args[0];
+if (!cmd) {
+  process.stdout.write(program.helpInformation());
+  program.emit('--help');
+  process.exit();
+}
+var argv = process.argv.slice(0,2);
+argv.push(program.args.map(function(a){return a.toString()}).join(":"));
+process.argv = argv;
+
+require('grunt').cli({gruntfile: root + "/Gruntfile.js",cmd:cmd, targetBase: process.cwd(), base: process.cwd(), verbose: false});

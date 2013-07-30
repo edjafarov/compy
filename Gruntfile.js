@@ -14,15 +14,17 @@ var folderDir = function folderDir(connect, point){
 
 module.exports = function(grunt){
   var karmaAdapters = __dirname + "/node_modules/grunt-karma/node_modules/karma/adapter";
-  //TODO: load base Gruntfile.js
-  //TODO: inject grunt with hacked initConfig
-  //TODO: write test
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
+  var indexTemplate = __dirname + '/index.html';
   var base = grunt.option('targetBase');
+  var cmd = grunt.option('cmd').toString();
   process.env.targetBase = base;
   var destination = "./dist";
-  
+  if(grunt.file.exists(base + "/index.html")){
+    indexTemplate = base + "/index.html";
+  }
+
   var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
@@ -42,12 +44,12 @@ module.exports = function(grunt){
     },
     // we-re taking all sources from here
     src:{
-      scripts:[ base + '/**/*.js'],
-      styles:[ base + '/**/*.css'],
-      images:[ base+ '/**/*.jpg', base+ '/**/*.png', base+ '/**/*.gif', base + '/**/*.icn'],
-      fonts:[ base+ '/**/*.ttf', base+ '/**/*.eof'],
-      templates: [ base+ '/**/*.html'],
-      tests:[ base + '/**/*.spec.js']
+      scripts:[ base + '{/!(node_modules|dist|components)/**/*.js,/*.js}'],
+      styles:[ base + '{/!(node_modules|dist|components)/**/*.css,/*.css}'],
+      images:[ base+ '/!(node_modules|dist|components)/**/*.{jpg,png,gif,icn}', base+ '/*.{jpg,png,gif,icn}'],
+      fonts:[ base+ '/!(node_modules|dist|components)/**/*.{ttf,eof}', base + '/*.{ttf,eof}'],
+      templates: [ base+ '{/!(node_modules|dist|components)/**/*.html,/*.html}', '!' + base + '/index.html'],
+      tests:[ base + '{/!(node_modules|dist|components)/**/*.spec.js,/*.spec.js}']
     },
     // we clean up generated source
     clean: {
@@ -56,33 +58,81 @@ module.exports = function(grunt){
     },
     // we use customized component build grunt task
     component_constructor:{
-      app:{
+      options:{
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
-        base: base,
-        configure: function(builder){
-          // we overwrite dependencies to be able to hot component reload while watch
-          var pkg = grunt.file.readJSON(base + '/package.json');
-          if(pkg.compy.dependencies){
-            builder.config.dependencies = pkg.compy.dependencies;
+        base: base
+      },
+      app:{
+        options:{
+          target: 'app',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config, grunt.config('src.tests'));
+            usePlugins(base, builder);
           }
-          
-          ignoreSources(builder.config, grunt.config('src.tests'));
-          usePlugins(base, builder);
         }
       },
       test: {
-        output: '<%= dest %>',
-        config: '<%= componentConfig %>',
-        base: base,
-        configure: function(builder){
-          // we overwrite dependencies to be able to hot component reload while watch
-          var pkg = grunt.file.readJSON(base + '/package.json');
-          if(pkg.compy.dependencies){
-            builder.config.dependencies = pkg.compy.dependencies;
+        options:{
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
           }
-          ignoreSources(builder.config);
-          usePlugins(base, builder);
+        }
+      },
+      styles_dev: {
+        options:{
+          name: 'app',
+          assetType: 'styles',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
+          }
+        }
+      },
+      scripts_dev: {
+        options:{
+          name: 'app',
+          assetType: 'scripts',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
+          }
+        }
+      },
+      templates_dev: {
+        options:{
+          name: 'app',
+          assetType: 'templates',
+          configure: function(builder){
+            // we overwrite dependencies to be able to hot component reload while watch
+            var pkg = grunt.file.readJSON(base + '/package.json');
+            if(pkg.compy.dependencies){
+              builder.config.dependencies = pkg.compy.dependencies;
+            }
+            ignoreSources(builder.config);
+            usePlugins(base, builder);
+          }
         }
       }
     },
@@ -93,16 +143,16 @@ module.exports = function(grunt){
       },
       // we watch sources independantly, but that doesn't makes much sense
       js: {
-        files: '<%= src.scrips %>',
-        tasks: ['compile']
+        files: '<%= src.scripts %>',
+        tasks: ['component_constructor:scripts_dev','concat:dist']
       },
       css:{
         files: '<%= src.styles %>',
-        tasks: ['compile']
+        tasks: ['component_constructor:styles_dev']
       },
       html:{
         files: '<%= src.templates %>',
-        tasks: ['compile']
+        tasks: ['component_constructor:templates_dev','concat:dist']
       }
     },
     connect: {
@@ -141,7 +191,7 @@ module.exports = function(grunt){
             appcss: 'app.css'
           }
         },
-        src: __dirname + '/index.html',
+        src: indexTemplate,
         dest:'<%= dest %>/index.html'
       },
       build:{
@@ -155,7 +205,7 @@ module.exports = function(grunt){
             appcss: appCssProd
           }
         },
-        src: __dirname + '/index.html',
+        src: indexTemplate,
         dest:'<%= dest %>/index.html'
       }
     },
@@ -191,19 +241,24 @@ module.exports = function(grunt){
   }
   var matchPlugins = require('./component-plugins-matching.js');
   matchPlugins(compyGruntConfig, getPlugins(base));
+
   function usePlugins(baseDir, builder){
     var plugins = getPlugins(baseDir);
     plugins.forEach(function(plugin){
-      console.log(baseDir + "/node_modules/" + plugin);
-      builder.use(require(baseDir + "/node_modules/" + plugin));
+      var pluginModule = require(baseDir + "/node_modules/" + plugin);
+      if(matchPlugins.config[plugin] && matchPlugins.config[plugin].run){
+        return matchPlugins.config[plugin].run(pluginModule, builder);
+      }
+      builder.use(pluginModule);
     })
   }
   /*
   * getPlugins is getting plugins from users project node_modules folder
   */
   function getPlugins(baseDir){
-    var nodeModules = fs.readdirSync(baseDir + "/node_modules");
     var componentPlugins = [];
+    if(!fs.existsSync(baseDir + "/node_modules")) return componentPlugins;
+    var nodeModules = fs.readdirSync(baseDir + "/node_modules");
     nodeModules.forEach(function(module){
       if(!/^component-/.test(module)) return;
       componentPlugins.push(module);
@@ -254,15 +309,15 @@ module.exports = function(grunt){
     })
   }
   
-  grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-preprocess/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-concat/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-uglify/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-cssmin/tasks');
-  grunt.loadTasks(__dirname + '/node_modules/grunt-karma/tasks');
+  if(!!~['build','compile','server','test','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
+  if(!!~['server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
+  if(!!~['server','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
+  if(!!~['build','compile'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
+  if(!!~['build','compile'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-preprocess/tasks');
+  if(!!~['build','compile','server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-concat/tasks');
+  if(!!~['build'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-uglify/tasks');
+  if(!!~['build'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-cssmin/tasks');
+  if(!!~['test'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-karma/tasks');
 
 
   grunt.registerTask('install', 'Install component', function(){
@@ -326,6 +381,5 @@ module.exports = function(grunt){
   grunt.registerTask('test', ['compy-test']);
 
   grunt.registerTask('default',['compile'])
-
 }
 

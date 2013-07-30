@@ -3,31 +3,56 @@
 [![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)
 compy - lightweight app builder/compiller
 =====
-Compy is a lightweight approach for developing single page apps (framework/lib agnostic). 
-Based on TJ's component.io package manager it allows you to install components and use them in your code right away.
+Compy is a lightweight approach for developing web apps (framework/lib agnostic). Based on TJ's [component](https://github.com/component/component) package manager it allows you to install components and use them in your code right away.
 Compy makes your development fun by:
 
-* allowing you to use installed components by just requiring them like in node.js
+* allowing you to use installed components without any configurations by just requiring them.
 * providing local ```require```
-* seting up local static server with livereload
-* supporting componentjs packages
+* supporting coffeescript, sass, jade and other [plugins](#plugins)
+* giving you livereload with simple static server
+* setting up karma runner
 * being flexible and grunt extendable
 
-watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details
+watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details [some of functionality was changed in 0.1.3]
 
-#### todo:
-- instant karma based tests
+##plugins
+compy can use component's [plugins](https://github.com/component/component/wiki/Plugins) to extend it's functionality. For example if you want to use coffee in your project, you need to ```npm install component-coffee``` in your project's folder.
+
+compy was tested with following plugins:
+- [rschmukler/component-stylus-plugin](https://github.com/rschmukler/component-stylus-plugin) — precompile stylus
+- [segmentio/component-jade](https://github.com/segmentio/component-jade) — precompile jade templates
+- [anthonyshort/component-coffee](https://github.com/anthonyshort/component-coffee) - require CoffeeScript files as scripts
+- [anthonyshort/component-sass](https://github.com/anthonyshort/component-sass) - compile Sass files using node-sass
+- [kewah/component-builder-handlebars](https://github.com/kewah/component-builder-handlebars) - precompile Handlebars templates
+- [ericgj/component-hogan](https://github.com/ericgj/component-hogan) - Mustache transpiler for component (using Hogan)
+- [segmentio/component-sass](https://github.com/segmentio/component-sass) — Sass transpiler for component
+- [segmentio/component-json](https://github.com/segmentio/component-json) — Require JSON files as Javascript.
+- [queckezz/component-roole](https://github.com/queckezz/component-roole) — Compile [Roole](http://roole.org) files
+- [Wizcorp/component-less](https://github.com/Wizcorp/component-less) - [LESS](https://github.com/less/less.js) transpiler for component-builder
+- [segmentio/component-markdown](https://github.com/segmentio/component-markdown) - Compile Markdown templates and make them available as Javascript strings.
 
 ##install
 
 ```$ npm install compy -g```
 
 ## cli comands
-* ```install[:<component>]``` - installs components from dependencies. With argument installs component, automatically saves it inside package.json
-* ```compile``` - compiles the project in ```dist``` folder
-* ```server[:watch]``` - runs simple http server for dist folder. With ```watch``` argument server watches the changes in source and recompiles the project.
-* ```build``` - builds (compiles + minifies) the project in ```dist``` folder
+```
+  Usage: compy <command> [options]
 
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+
+  Commands:
+
+    install [name ...]      install dependencies or component
+    compile                 compile app (in dist folder by default)
+    build                   build the app (compile and minify sources)
+    server [watch]          run static server. If "watch" option enabled - watch changes, recompile and push livereload
+    test                    run karma tests
+    watch                   watch and rebuild assets on change
+```
 ## config
 The configuration for compy sits in package.json inside compy namespace. ```main``` is an entry point of your app and the only required property.
 
@@ -40,9 +65,7 @@ The configuration for compy sits in package.json inside compy namespace. ```main
   "license": "BSD",
   "compy": {
     "dependencies": {
-      "component/jquery": "*",
-      "component/tip": "*",
-      "component/s3": "*"
+      "component/jquery": "*"
     },
     "main": "app.js"
   }
