@@ -3,6 +3,13 @@ var program = require('commander');
 var path = require('path');
 var fs   = require('fs');
 var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
+
+if(!fs.existsSync(root + '/package.json')){
+  console.log("Please, create package.json in current dir");
+  console.log("package.json file with compy.main defined is required");
+  return;
+};
+
 var packageJson = require(root + '/package.json');
 
 program
@@ -30,7 +37,17 @@ if (!cmd) {
   process.exit();
 }
 var argv = process.argv.slice(0,2);
+
 argv.push(program.args.map(function(a){return a.toString()}).join(":"));
+
+if(!packageJson.compy){
+  console.log("Please define main file for compy in package.json (compy.main)");
+  console.log("package.json file with compy.main defined is required");
+  return;
+}
+
 process.argv = argv;
+
+
 
 require('grunt').cli({gruntfile: root + "/Gruntfile.js",cmd:cmd, targetBase: process.cwd(), base: process.cwd(), verbose: false});
