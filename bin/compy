@@ -4,6 +4,7 @@ var path = require('path');
 var fs   = require('fs');
 var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 
+/*
 #var complete = require('complete');
 
 #complete.list = ['install','compile','build','server','test','watch'];
@@ -20,6 +21,7 @@ var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 #  }
 #})
 #complete.init();
+*/
 
 if(!fs.existsSync(root + '/package.json')){
   console.log("Please, create package.json in current dir");
