@@ -22,13 +22,14 @@ var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 #})
 #complete.init();
 */
-
-if(!fs.existsSync(root + '/package.json')){
+var projectJson;
+if(!fs.existsSync(process.cwd() + '/package.json')){
   console.log("Please, create package.json in current dir");
   console.log("package.json file with compy.main defined is required");
   return;
 };
 
+var projectJson = require(process.cwd() + '/package.json');
 var packageJson = require(root + '/package.json');
 
 program
@@ -59,7 +60,7 @@ var argv = process.argv.slice(0,2);
 
 argv.push(program.args.map(function(a){return a.toString()}).join(":"));
 
-if(!packageJson.compy){
+if(!projectJson.compy){
   console.log("Please define main file for compy in package.json (compy.main)");
   console.log("package.json file with compy.main defined is required");
   return;
