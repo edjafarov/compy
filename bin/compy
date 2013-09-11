@@ -4,6 +4,23 @@ var path = require('path');
 var fs   = require('fs');
 var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 
+#var complete = require('complete');
+
+#complete.list = ['install','compile','build','server','test','watch'];
+
+#complete({
+#  program:"compy",
+#  commands:{
+#    server:function(words, prev, cur){
+#      complete.output(cur, ['watch']);
+#    },
+#  },
+#  options:{
+#    '--help':{}
+#  }
+#})
+#complete.init();
+
 if(!fs.existsSync(root + '/package.json')){
   console.log("Please, create package.json in current dir");
   console.log("package.json file with compy.main defined is required");
