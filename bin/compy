@@ -69,5 +69,4 @@ if(!projectJson.compy){
 process.argv = argv;
 
 
-
 require('grunt').cli({gruntfile: root + "/Gruntfile.js",cmd:cmd, targetBase: process.cwd(), base: process.cwd(), verbose: false});

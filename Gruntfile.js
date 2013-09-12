@@ -12,7 +12,9 @@ var folderDir = function folderDir(connect, point){
     return connect.directory(path.resolve(point));
 }
 
+var config = require(__dirname + "/config.json");
 module.exports = function(grunt){
+  
   var karmaAdapters = __dirname + "/node_modules/grunt-karma/node_modules/karma/adapter";
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
@@ -166,7 +168,7 @@ module.exports = function(grunt){
           keepalive: false,
           middleware: function(connect, options){
             return [
-            require('connect-livereload')({port:35729}),
+            require('connect-livereload')({port:config.livereloadPort}),
             folderMount(connect, destination),
             folderDir(connect, destination)]
           }
