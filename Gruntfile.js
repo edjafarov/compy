@@ -22,11 +22,13 @@ module.exports = function(grunt){
   var base = grunt.option('targetBase');
   var cmd = grunt.option('cmd').toString();
   process.env.targetBase = base;
-  var destination = "./dist";
+  var destination = grunt.option('destination');
+  var serverPath = grunt.option('server');
+  
   if(grunt.file.exists(base + "/index.html")){
     indexTemplate = base + "/index.html";
   }
-
+console.log(destination);
   var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
@@ -140,7 +142,7 @@ module.exports = function(grunt){
     },
     watch: {
       options:{
-        livereload: true,
+        livereload: config.livereloadPort,
         nospawn: true
       },
       // we watch sources independantly, but that doesn't makes much sense
@@ -363,10 +365,10 @@ module.exports = function(grunt){
 
   grunt.registerTask('server', 'run server', function(arg){
     if(arg =="watch"){
-      grunt.task.run('connect:server');
+      serverPath ? require(serverPath) : grunt.task.run('connect:server');
       return grunt.task.run('watch');
     }else{
-      grunt.task.run('connect:alive');
+      serverPath ? require(serverPath) : grunt.task.run('connect:alive');
     }
   });
   

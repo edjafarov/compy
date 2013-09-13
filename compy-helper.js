@@ -1,5 +1,6 @@
 var connect = require('connect');
 var async = require('async');
+var path = require('path');
 var config = require(__dirname + '/config.json');
 var _ = require('underscore');
 
@@ -13,7 +14,7 @@ var folderDir = function folderDir(point){
 
 
 module.exports = {
-  middleware: function(buildDir, options){
+  middleware: function(buildDir, opts){
     options = {
       livereload : true,
       serveStatic : true,
@@ -22,7 +23,7 @@ module.exports = {
     }
     var livereload = require('connect-livereload')({
       port : config.livereloadPort
-    }
+    });
     var serveStatic = folderMount(buildDir);
     var serveDir = folderDir(buildDir);
 

@@ -15,7 +15,7 @@
     "grunt-cli": "latest",
     "component": "latest",
     "grunt": "latest",
-    "grunt-component-constructor": "latest",
+    "grunt-component-constructor": "~0.2.13",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-watch": "latest",
@@ -34,7 +34,8 @@
     "request": "~2.25.0",
     "commander": "~2.0.0",
     "complete": "~0.4.3",
-    "connect": "~2.9.0"
+    "connect": "~2.9.0",
+    "underscore": "~1.5.2"
   },
   "bin": {
     "compy": "./bin/compy"

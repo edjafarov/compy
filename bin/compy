@@ -22,21 +22,17 @@ var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 #})
 #complete.init();
 */
-var projectJson;
-if(!fs.existsSync(process.cwd() + '/package.json')){
-  console.log("Please, create package.json in current dir");
-  console.log("package.json file with compy.main defined is required");
-  return;
-};
 
-var projectJson = require(process.cwd() + '/package.json');
 var packageJson = require(root + '/package.json');
 
 program
   .version(packageJson.version)
   .usage('<command> [options]')
+  .option('-d, --dir <path>', 'project source path. Must contain package.json')
+  .option('-o, --output <path>', 'output directory for build/compile')
+  .option('-v, --verbose', 'verbosity')
+  .option('-s, --staticServer <path>', 'custom server that serves static with compy middleware')
   
-
 program.on('--help', function(){
   console.log('  Commands:');
   console.log();
@@ -56,8 +52,23 @@ if (!cmd) {
   program.emit('--help');
   process.exit();
 }
-var argv = process.argv.slice(0,2);
 
+var options = {
+  cwd : program.dir && path.resolve(program.dir) || process.cwd(),
+  destination : program.output && path.resolve(program.output) || './dist',
+  verbose : !!program.verbose,
+  server : program.staticServer && path.resolve(program.staticServer)
+}
+
+if(!fs.existsSync(options.cwd + '/package.json')){
+  console.log("Please, create package.json in current dir");
+  console.log("package.json file with compy.main defined is required");
+  return;
+};
+
+var projectJson = require(options.cwd + '/package.json');
+
+var argv = process.argv.slice(0,2);
 argv.push(program.args.map(function(a){return a.toString()}).join(":"));
 
 if(!projectJson.compy){
@@ -68,5 +79,10 @@ if(!projectJson.compy){
 
 process.argv = argv;
 
-
-require('grunt').cli({gruntfile: root + "/Gruntfile.js",cmd:cmd, targetBase: process.cwd(), base: process.cwd(), verbose: false});
+require('grunt').cli({gruntfile: root + "/Gruntfile.js", 
+    cmd:cmd,
+    targetBase: options.cwd,
+    base: options.cwd,
+    destination: options.destination,
+    verbose : options.verbose,
+    server: options.server});
