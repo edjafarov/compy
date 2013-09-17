@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "component js boilerplate js project",
   "main": "compy-helper.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "BSD",
   "dependencies": {
     "grunt-cli": "latest",
-    "component": "latest",
+    "component": "~0.17.0",
     "grunt": "latest",
     "grunt-component-constructor": "~0.2.13",
     "grunt-contrib-connect": "latest",

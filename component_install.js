@@ -159,7 +159,7 @@ module.exports = function (config, opts, callback){
   // padding
 
   process.on('exit', function(){
-    console.log();
+    console.log("EXIT");
   });
 
   /**
@@ -183,8 +183,11 @@ module.exports = function (config, opts, callback){
     });
 
     report(pkg);
-
-    pkg.on('end', callback);
+    //comment it for a while https://github.com/component/component/pull/414
+    pkg.on('end', function(){
+      setTimeout(callback, 200);
+    });
+    
     // TODO: add callback
     pkg.install();
   }

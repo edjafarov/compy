@@ -65,7 +65,8 @@ console.log(destination);
       options:{
         output:'<%= dest %>',
         config:'<%= componentConfig %>',
-        base: base
+        base: base,
+        sourceUrls: false
       },
       app:{
         options:{
