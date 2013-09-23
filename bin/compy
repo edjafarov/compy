@@ -30,6 +30,9 @@ program
   .usage('<command> [options]')
   .option('-d, --dir <path>', 'project source path. Must contain package.json')
   .option('-o, --output <path>', 'output directory for build/compile')
+  .option('-l, --library', 'generate standalone library')
+  .option('-c, --component', 'generate component')
+  .option('-a, --application', 'generate application [default]')
   .option('-v, --verbose', 'verbosity')
   .option('-s, --staticServer <path>', 'custom server that serves static with compy middleware')
   
@@ -57,7 +60,10 @@ var options = {
   cwd : program.dir && path.resolve(program.dir) || process.cwd(),
   destination : program.output && path.resolve(program.output) || './dist',
   verbose : !!program.verbose,
-  server : program.staticServer && path.resolve(program.staticServer)
+  server : program.staticServer && path.resolve(program.staticServer),
+  isStandaloneLib: program.library,
+  isComponentjs: program.component,
+  isApplication: program.application
 }
 
 if(!fs.existsSync(options.cwd + '/package.json')){

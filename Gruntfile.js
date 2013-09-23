@@ -72,7 +72,7 @@ module.exports = function(grunt){
       app:{
         options:{
           target: 'app',
-          standalone: false,
+          standalone: grunt.option('isStandaloneLib'),
           configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
             var pkg = grunt.file.readJSON(base + '/package.json');
