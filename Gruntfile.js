@@ -28,7 +28,6 @@ module.exports = function(grunt){
   if(grunt.file.exists(base + "/index.html")){
     indexTemplate = base + "/index.html";
   }
-console.log(destination);
   var compyGruntConfig = {
     pkg: grunt.file.readJSON(base + '/package.json'),
     dest: destination,
@@ -37,6 +36,8 @@ console.log(destination);
     componentConfig:{
       name: '<%= pkg.name %>',
       main: '<%= pkg.compy.main %>',
+      author: '<%= pkg.author %>',
+      description: '<%= pkg.description %>',
       dependencies: '<%= pkg.compy.dependencies %>',
       version: '<%= pkg.version %>',
       license: '<%= pkg.license %>',
@@ -71,6 +72,7 @@ console.log(destination);
       app:{
         options:{
           target: 'app',
+          standalone: false,
           configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
             var pkg = grunt.file.readJSON(base + '/package.json');
@@ -203,7 +205,7 @@ console.log(destination);
         options:{
           context:{
             name: '<%= pkg.name %>',
-            main: '<%= pkg.component.main %>',
+            main: '<%= pkg.compy.main %>',
             description: '<%= pkg.description %>',
             title: '<%= pkg.title %>',
             appdest: appJsProd,

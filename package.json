@@ -15,7 +15,7 @@
     "grunt-cli": "latest",
     "component": "~0.17.0",
     "grunt": "latest",
-    "grunt-component-constructor": "~0.2.13",
+    "grunt-component-constructor": "~0.2.14",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-watch": "latest",
