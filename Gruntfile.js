@@ -298,6 +298,7 @@ module.exports = function(grunt){
   }
   function ignoreSources(config, ignorePatterns){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
+      
       var ignore = ['components','dist','node_modules'];
       var testFor = new RegExp('^(' + ignore.join('|') + ')\\/');
       var ignoreFiles = [];
@@ -310,8 +311,9 @@ module.exports = function(grunt){
         if(!!~ignoreFiles.indexOf(filepath)) return;
         var relPath = path.relative(base, filepath);
         if(testFor.test(relPath)) return;
-        remap.push(relPath);
+        remap.push(relPath.replace("\\","/"));// windows hackin
       })
+      
       config[asset] = remap;
     })
   }
