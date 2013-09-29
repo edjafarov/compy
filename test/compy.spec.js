@@ -110,7 +110,7 @@ describe("compy should", function(){
 
 
 
-  xdescribe('set static server', function(){
+  describe('set static server', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
