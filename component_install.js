@@ -159,7 +159,7 @@ module.exports = function (config, opts, callback){
   // padding
 
   process.on('exit', function(){
-    console.log("EXIT");
+    //console.log("EXIT");
   });
 
   /**
