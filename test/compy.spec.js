@@ -11,7 +11,7 @@ var fake = !process.env.NOCK_OFF;
 describe("compy should", function(){
   after(cleanDir);
 
-  describe('install', function(){
+  xdescribe('install', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
@@ -37,7 +37,7 @@ describe("compy should", function(){
     })
   })
 
-  describe('install <component name> - component/domify', function(){
+  xdescribe('install <component name> - component/domify', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/domify/master/component.json')
@@ -69,7 +69,7 @@ describe("compy should", function(){
 
   })
 
-  describe('compile #compile', function(){
+  xdescribe('compile #compile', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
@@ -110,7 +110,7 @@ describe("compy should", function(){
 
 
 
-  xdescribe('set static server', function(){
+  describe('set static server', function(){
     this.timeout(100000);
     var github = nock('https://raw.github.com:443')
     .get('/component/model/master/component.json')
