@@ -155,7 +155,7 @@ describe("compy should", function(){
 //TODO: test templating
 //TODO: test - karma testing
 //TODO: test building
-
+//TODO: test standalone libs
 
 function runCompyWith(comands, done){
   var args = [__dirname + '/../bin/compy'].concat(comands);
