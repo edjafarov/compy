@@ -150,9 +150,11 @@ describe("compy should", function(){
 
 
 
-
-
-
+//TODO: plugins real plugins for working jade/coffescript
+//TODO: run real app (should work) I guess math will work ok
+//TODO: test templating
+//TODO: test - karma testing
+//TODO: test building
 
 
 function runCompyWith(comands, done){
