@@ -311,7 +311,7 @@ module.exports = function(grunt){
         if(!!~ignoreFiles.indexOf(filepath)) return;
         var relPath = path.relative(base, filepath);
         if(testFor.test(relPath)) return;
-        remap.push(relPath.replace("\\","/"));// windows hackin
+        remap.push(relPath.replace(/\\/g,"/"));// windows hackin
       })
       
       config[asset] = remap;
