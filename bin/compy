@@ -34,6 +34,7 @@ program
   .option('-c, --component', 'generate component')
   .option('-a, --application', 'generate application [default]')
   .option('-v, --verbose', 'verbosity')
+  .option('-f, --force', 'force installation of packages')
   .option('-s, --staticServer <path>', 'custom server that serves static with compy middleware')
   
 program.on('--help', function(){
@@ -63,7 +64,8 @@ var options = {
   server : program.staticServer && path.resolve(program.staticServer),
   isStandaloneLib: program.library,
   isComponentjs: program.component,
-  isApplication: program.application
+  isApplication: program.application,
+  force: !!program.force
 }
 
 if(!fs.existsSync(options.cwd + '/package.json')){
@@ -91,4 +93,5 @@ require('grunt').cli({gruntfile: root + "/Gruntfile.js",
     base: options.cwd,
     destination: options.destination,
     verbose : options.verbose,
-    server: options.server});
+    server: options.server,
+    force: options.force});

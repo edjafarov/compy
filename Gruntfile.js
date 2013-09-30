@@ -347,7 +347,7 @@ module.exports = function(grunt){
       args = args.concat(pkgCheck);
     }
     if(!config.dependencies) config.dependencies = {};
-    compInstall(config, {args: args, out: base + "/components"}, installed);
+    compInstall(config, {args: args, out: base + "/components", force: grunt.option('force')}, installed);
 
     function installed(err, deps){
       var pkg = grunt.file.readJSON(base + '/package.json');

@@ -181,12 +181,16 @@ module.exports = function (config, opts, callback){
       dev: opts.dev,
       remotes: conf.remotes
     });
-
+    pkg.force = opts.force;
     report(pkg);
     //comment it for a while https://github.com/component/component/pull/414
     pkg.on('end', function(){
       setTimeout(callback, 200);
     });
+    
+    pkg.on('exists', function(){
+      setTimeout(callback, 200);
+    })
     
     // TODO: add callback
     pkg.install();
