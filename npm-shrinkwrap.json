@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.1.5",
+  "version": "0.1.10",
   "dependencies": {
     "grunt-cli": {
       "version": "0.1.9",
@@ -399,27 +399,24 @@
       }
     },
     "grunt-component-constructor": {
-      "version": "0.2.14",
-      "from": "grunt-component-constructor@~0.2.14",
+      "version": "0.2.16",
+      "from": "grunt-component-constructor@~0.2.16",
       "dependencies": {
         "component-builder": {
-          "version": "0.9.0",
-          "from": "https://registry.npmjs.org/component-builder/-/component-builder-0.9.0.tgz",
-          "resolved": "https://registry.npmjs.org/component-builder/-/component-builder-0.9.0.tgz",
+          "version": "0.9.2",
+          "from": "component-builder@0.9.2",
           "dependencies": {
             "batch": {
               "version": "0.2.1",
-              "from": "https://registry.npmjs.org/batch/-/batch-0.2.1.tgz",
-              "resolved": "https://registry.npmjs.org/batch/-/batch-0.2.1.tgz"
+              "from": "batch@0.2.1"
             },
             "mkdirp": {
               "version": "0.3.4",
-              "from": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.4.tgz",
-              "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.4.tgz"
+              "from": "mkdirp@0.3.4"
             },
             "debug": {
               "version": "0.7.2",
-              "from": "debug@~0.7.0",
+              "from": "debug@0.7.2",
               "resolved": "https://registry.npmjs.org/debug/-/debug-0.7.2.tgz"
             },
             "better-assert": {
@@ -434,19 +431,18 @@
             },
             "cp": {
               "version": "0.1.1",
-              "from": "https://registry.npmjs.org/cp/-/cp-0.1.1.tgz",
+              "from": "cp@0.1.1",
               "resolved": "https://registry.npmjs.org/cp/-/cp-0.1.1.tgz"
             },
             "string-to-js": {
               "version": "0.0.1",
-              "from": "string-to-js@0.0.1",
-              "resolved": "https://registry.npmjs.org/string-to-js/-/string-to-js-0.0.1.tgz"
+              "from": "string-to-js@0.0.1"
             }
           }
         },
         "component-require": {
-          "version": "0.2.2",
-          "from": "component-require@0.2.2"
+          "version": "0.3.1",
+          "from": "component-require@0.3.1"
         }
       }
     },
