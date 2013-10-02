@@ -342,16 +342,17 @@ module.exports = function(grunt){
     
     ignoreSources(config);
     var args = [];
-   
     var pkgCheck = process.argv.slice(-1)[0].split(':');
     if(pkgCheck.length > 1){
       pkgCheck.shift();
       args = args.concat(pkgCheck);
     }
     if(!config.dependencies) config.dependencies = {};
+    
     compInstall(config, {args: args, out: base + "/components", force: grunt.option('force')}, installed);
 
     function installed(err, deps){
+      if(args.length === 0) return done();
       var pkg = grunt.file.readJSON(base + '/package.json');
       pkg.compy.dependencies = deps;
       grunt.file.write(base + '/package.json', JSON.stringify(pkg, null, 2));
