@@ -52,6 +52,11 @@ var effectHash = {
       styles:[".less"]
     }
   },
+  "component-lesser":{
+    ext:{
+      styles:[".less"]
+    }
+  },
   "component-markdown":{
     ext:{
       templates:[".md",".markdown"]
