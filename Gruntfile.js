@@ -157,7 +157,7 @@ module.exports = function(grunt){
       },
       css:{
         files: '<%= src.styles %>',
-        tasks: ['component_constructor:styles_dev']
+        tasks: ['component_constructor:app', 'concat:dist']
       },
       html:{
         files: '<%= src.templates %>',
