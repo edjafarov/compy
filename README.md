@@ -28,7 +28,7 @@ compy was tested with following plugins:
 - [segmentio/component-sass](https://github.com/segmentio/component-sass) — Sass transpiler for component
 - [segmentio/component-json](https://github.com/segmentio/component-json) — Require JSON files as Javascript.
 - [queckezz/component-roole](https://github.com/queckezz/component-roole) — Compile [Roole](http://roole.org) files
-- [Wizcorp/component-less](https://github.com/Wizcorp/component-less) - [LESS](https://github.com/less/less.js) transpiler for component-builder
+- [bscomp/component-lesser](https://github.com/bscomp/component-lesser) - [LESS](https://github.com/less/less.js) transpiler for compy
 - [segmentio/component-markdown](https://github.com/segmentio/component-markdown) - Compile Markdown templates and make them available as Javascript strings.
 
 ##install
