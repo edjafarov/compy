@@ -10,8 +10,6 @@ Compy makes your development fun by:
 * providing local ```require```
 * supporting coffeescript, sass, jade and other [plugins](#plugins)
 * giving you livereload with simple static server
-* setting up karma runner
-* being flexible and grunt extendable
 
 watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details [some of functionality was changed in 0.1.3]
 
