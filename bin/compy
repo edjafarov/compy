@@ -24,6 +24,9 @@ var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 */
 
 var packageJson = require(root + '/package.json');
+var gruntfilesMap = {
+  "plate": "GBoilerplate.js"
+};
 
 program
   .version(packageJson.version)
@@ -36,7 +39,7 @@ program
   .option('-v, --verbose', 'verbosity')
   .option('-f, --force', 'force installation of packages')
   .option('-s, --staticServer <path>', 'custom server that serves static with compy middleware')
-  
+
 program.on('--help', function(){
   console.log('  Commands:');
   console.log();
@@ -46,6 +49,7 @@ program.on('--help', function(){
   console.log('    server [watch]          run static server. If "watch" option enabled - watch changes, recompile and push livereload');
   console.log('    test                    run karma tests');
   console.log('    watch                   watch and rebuild assets on change');
+  console.log('    plate [appname]         generate boilerplate package.json');
   console.log();
   console.log();
 }).parse(process.argv);
@@ -68,6 +72,32 @@ var options = {
   force: !!program.force
 }
 
+var argv = process.argv.slice(0,2);
+argv.push(program.args.map(function(a){return a.toString()}).join(":"));
+
+process.argv = argv;
+process.program = program;
+
+
+// execute `plate` command BEFORE Grunt.js context
+if (cmd == "plate") {
+  var name = program.args.length > 1 ? program.args[1] : "test";
+  if (fs.existsSync("./package.json")) {
+    console.log("File packages.json already exist");
+    return;
+  }
+  console.log("Creating boilerplate 'package.json' with app name '" + name + "' ...");
+
+  fs.readFile(root + "/package.json.tpl", function (err, data) {
+    if (err) throw err;
+    fs.open("./package.json", "w", function (err, fd) {
+      fs.write(fd, data.toString().replace(/\$name/g, name));
+      fs.close(fd);
+    })
+  });
+  return;
+}
+
 if(!fs.existsSync(options.cwd + '/package.json')){
   console.log("Please, create package.json in current dir");
   console.log("package.json file with compy.main defined is required");
@@ -76,18 +106,14 @@ if(!fs.existsSync(options.cwd + '/package.json')){
 
 var projectJson = require(options.cwd + '/package.json');
 
-var argv = process.argv.slice(0,2);
-argv.push(program.args.map(function(a){return a.toString()}).join(":"));
-
 if(!projectJson.compy){
   console.log("Please define main file for compy in package.json (compy.main)");
   console.log("package.json file with compy.main defined is required");
   return;
 }
 
-process.argv = argv;
-
-require('grunt').cli({gruntfile: root + "/Gruntfile.js", 
+// execute grunt task
+require('grunt').cli({gruntfile: gruntfilesMap[cmd] || "Gruntfile.js",
     cmd:cmd,
     targetBase: options.cwd,
     base: options.cwd,
