@@ -14,7 +14,7 @@ var folderDir = function folderDir(connect, point){
 
 var config = require(__dirname + "/config.json");
 module.exports = function(grunt){
-  
+
   var karmaAdapters = __dirname + "/node_modules/grunt-karma/node_modules/karma/adapter";
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
@@ -24,7 +24,7 @@ module.exports = function(grunt){
   process.env.targetBase = base;
   var destination = grunt.option('destination');
   var serverPath = grunt.option('server');
-  
+
   if(grunt.file.exists(base + "/index.html")){
     indexTemplate = base + "/index.html";
   }
@@ -296,11 +296,11 @@ module.exports = function(grunt){
       oldReg.apply(this, arguments);
     }
   }else{
-    grunt.initConfig(compyGruntConfig); 
+    grunt.initConfig(compyGruntConfig);
   }
   function ignoreSources(config, ignorePatterns){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
-      
+
       var ignore = ['components','dist','node_modules'];
       var testFor = new RegExp('^(' + ignore.join('|') + ')\\/');
       var ignoreFiles = [];
@@ -315,11 +315,11 @@ module.exports = function(grunt){
         if(testFor.test(relPath)) return;
         remap.push(relPath.replace(/\\/g,"/"));// windows hackin
       })
-      
+
       config[asset] = remap;
     })
   }
-  
+
   if(!!~['build','compile','server','test','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
   if(!!~['server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
   if(!!~['server','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
@@ -339,7 +339,7 @@ module.exports = function(grunt){
       }
     });
     var done = this.async();
-    
+
     ignoreSources(config);
     var args = [];
     var pkgCheck = process.argv.slice(-1)[0].split(':');
@@ -348,7 +348,7 @@ module.exports = function(grunt){
       args = args.concat(pkgCheck);
     }
     if(!config.dependencies) config.dependencies = {};
-    
+
     compInstall(config, {args: args, out: base + "/components", force: grunt.option('force')}, installed);
 
     function installed(err, deps){
@@ -379,7 +379,7 @@ module.exports = function(grunt){
       serverPath ? require(serverPath) : grunt.task.run('connect:alive');
     }
   });
-  
+
   grunt.registerTask('compy-compile', ['clean:dist', 'component_constructor:app','concat:dist','preprocess:html']);
 
   grunt.registerTask('compy-build', ['clean:dist', 'component_constructor:app','concat:dist','preprocess:build', 'uglify', 'cssmin']);
@@ -392,6 +392,6 @@ module.exports = function(grunt){
 
   grunt.registerTask('test', ['compy-test']);
 
-  grunt.registerTask('default',['compile'])
+  grunt.registerTask('default', ['compile']);
 }
 
