@@ -189,15 +189,6 @@ module.exports = function(grunt){
     },
     // preprocess used to build proper index.html
     preprocess:{
-      plate:{
-        options:{
-          context:{
-            name: '<%= pkg.name %>',
-          }
-        },
-        src: 'package.json.tpl',
-        dest:'<%= dest %>/package.json.test'
-      },
       html:{
         options:{
           context:{
@@ -400,8 +391,6 @@ module.exports = function(grunt){
   grunt.registerTask('build', ['compy-build']);
 
   grunt.registerTask('test', ['compy-test']);
-
-  //grunt.registerTask('boilerplate', ['preprocess:plate']);
 
   grunt.registerTask('default', ['compile']);
 }

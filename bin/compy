@@ -24,9 +24,6 @@ var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 */
 
 var packageJson = require(root + '/package.json');
-var gruntfilesMap = {
-  "plate": "GBoilerplate.js"
-};
 
 program
   .version(packageJson.version)
@@ -82,7 +79,7 @@ process.program = program;
 // execute `plate` command BEFORE Grunt.js context
 if (cmd == "plate") {
   var name = program.args.length > 1 ? program.args[1] : "test";
-  if (fs.existsSync("./package.json")) {
+  if (fs.existsSync(options.cwd + "/package.json")) {
     console.log("File packages.json already exist");
     return;
   }
@@ -90,7 +87,7 @@ if (cmd == "plate") {
 
   fs.readFile(root + "/package.json.tpl", function (err, data) {
     if (err) throw err;
-    fs.open("./package.json", "w", function (err, fd) {
+    fs.open(options.cwd + "/package.json", "w", function (err, fd) {
       fs.write(fd, data.toString().replace(/\$name/g, name));
       fs.close(fd);
     })
@@ -113,7 +110,7 @@ if(!projectJson.compy){
 }
 
 // execute grunt task
-require('grunt').cli({gruntfile: gruntfilesMap[cmd] || "Gruntfile.js",
+require('grunt').cli({gruntfile: root + "/Gruntfile.js",
     cmd:cmd,
     targetBase: options.cwd,
     base: options.cwd,
