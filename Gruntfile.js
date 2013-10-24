@@ -28,8 +28,14 @@ module.exports = function(grunt){
   if(grunt.file.exists(base + "/index.html")){
     indexTemplate = base + "/index.html";
   }
+  var ignore = ['components','dist','node_modules'];
+  var packageJson = grunt.file.readJSON(base + '/package.json');
+  if(packageJson.compy && packageJson.compy.paths) {
+    ignore = ignore.concat(packageJson.compy.paths);
+  }
+  var ignoreString = '(' + ignore.join('|') + ')';
   var compyGruntConfig = {
-    pkg: grunt.file.readJSON(base + '/package.json'),
+    pkg: packageJson,
     dest: destination,
     targetBase: base,
     // this is like component.json contents for component
@@ -47,16 +53,17 @@ module.exports = function(grunt){
       fonts: '<%= src.fonts %>',
       templates: '<%= src.templates %>',
       paths: '<%= pkg.compy.paths %>',
-      local: '<%= pkg.compy.local %>'
+      local: '<%= pkg.compy.local %>',
+      remotes: '<%= pkg.compy.remotes %>'
     },
     // we-re taking all sources from here
     src:{
-      scripts:[ base + '{/!(node_modules|dist|components)/**/*.js,/*.js}'],
-      styles:[ base + '{/!(node_modules|dist|components)/**/*.css,/*.css}'],
-      images:[ base+ '/!(node_modules|dist|components)/**/*.{jpg,png,gif,icn}', base+ '/*.{jpg,png,gif,icn}'],
-      fonts:[ base+ '/!(node_modules|dist|components)/**/*.{ttf,eof}', base + '/*.{ttf,eof}'],
-      templates: [ base+ '{/!(node_modules|dist|components)/**/*.html,/*.html}', '!' + base + '/index.html'],
-      tests:[ base + '{/!(node_modules|dist|components)/**/*.spec.js,/*.spec.js}']
+      scripts:[ base + '{/!'+ignoreString+'/**/*.js,/*.js}'],
+      styles:[ base + '{/!'+ignoreString+'/**/*.css,/*.css}'],
+      images:[ base+ '/!'+ignoreString+'/**/*.{jpg,png,gif,icn}', base+ '/*.{jpg,png,gif,icn}'],
+      fonts:[ base+ '/!'+ignoreString+'/**/*.{ttf,eof}', base + '/*.{ttf,eof}'],
+      templates: [ base+ '{/!'+ignoreString+'/**/*.html,/*.html}', '!' + base + '/index.html'],
+      tests:[ base + '{/!'+ignoreString+'/**/*.spec.js,/*.spec.js}']
     },
     // we clean up generated source
     clean: {
@@ -302,6 +309,7 @@ module.exports = function(grunt){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
 
       var ignore = ['components','dist','node_modules'];
+      
       var testFor = new RegExp('^(' + ignore.join('|') + ')\\/');
       var ignoreFiles = [];
       if(ignorePatterns){
