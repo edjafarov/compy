@@ -3,6 +3,7 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var compInstall = require('./component_install.js');
 var fs = require('fs');
+var _ = require('underscore');
 
 var folderMount = function folderMount(connect, point) {
     return connect.static(path.resolve(point));
@@ -30,8 +31,7 @@ module.exports = function(grunt){
   if(grunt.file.exists(base + "/index.html")){
     indexTemplate = base + "/index.html";
   }
-  // add project's node_modules to NODE_PATH
-  process.env.NODE_PATH += ";" + path.resolve(base) + "/node_modules";
+
   // build ignore source pattern
   var ignore = ['components','dist','node_modules'];
   var packageJson = grunt.file.readJSON(base + '/package.json');
@@ -39,6 +39,19 @@ module.exports = function(grunt){
     ignore = ignore.concat(packageJson.compy.paths);
   }
   var ignoreString = '(' + ignore.join('|') + ')';
+  //prepare projects karma plugins
+  // mocha, jasmine, sinon - whatewer
+  // set'em up if they are declated in config
+  var customTestSetup = (packageJson.compy && packageJson.compy.tests)?packageJson.compy.tests:{};
+  if(customTestSetup.plugins && customTestSetup.plugins.length > 0){
+    // we can error handle here and check if those plugins are installed in project's folder
+    // also we can check if they are installed in compy's node_modules folder
+    customTestSetup.plugins = _(customTestSetup.plugins).map(function(plugin){
+      return base + "/node_modules/" + plugin;
+    });
+  }
+
+
   var compyGruntConfig = {
     pkg: packageJson,
     dest: destination,
@@ -255,14 +268,19 @@ module.exports = function(grunt){
       }
     },
     karma: {
-      unit: {
+      unit: _({
         autoWatch:false,
         browsers:["PhantomJS"],
         colors: true,
         configFile: __dirname + '/tmpl/karma.config.js',
         reporters:['dots'],
-        singleRun: true
-      }
+        singleRun: true,
+        plugins: [
+          'karma-phantomjs-launcher',
+          'karma-chrome-launcher',
+          'karma-firefox-launcher'
+        ]
+      }).extend(customTestSetup)
     }
   }
   var matchPlugins = require('./component-plugins-matching.js');
