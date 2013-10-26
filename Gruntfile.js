@@ -45,6 +45,7 @@ module.exports = function(grunt){
       author: '<%= pkg.author %>',
       description: '<%= pkg.description %>',
       dependencies: '<%= pkg.compy.dependencies %>',
+      development: '<%= pkg.compy.development %>',
       version: '<%= pkg.version %>',
       license: '<%= pkg.license %>',
       scripts:'<%= src.scripts %>',
@@ -95,6 +96,7 @@ module.exports = function(grunt){
       },
       test: {
         options:{
+          dev: true,
           configure: function(builder){
             // we overwrite dependencies to be able to hot component reload while watch
             var pkg = grunt.file.readJSON(base + '/package.json');
@@ -307,9 +309,6 @@ module.exports = function(grunt){
   }
   function ignoreSources(config, ignorePatterns){
     ['images','fonts','scripts','styles','templates'].forEach(function(asset){
-
-      var ignore = ['components','dist','node_modules'];
-      
       var testFor = new RegExp('^(' + ignore.join('|') + ')\\/');
       var ignoreFiles = [];
       if(ignorePatterns){
@@ -323,7 +322,6 @@ module.exports = function(grunt){
         if(testFor.test(relPath)) return;
         remap.push(relPath.replace(/\\/g,"/"));// windows hackin
       })
-
       config[asset] = remap;
     })
   }
@@ -331,7 +329,7 @@ module.exports = function(grunt){
   if(!!~['build','compile','server','test','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
   if(!!~['server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
   if(!!~['server','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks');
-  if(!!~['build','compile'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
+  if(!!~['build','compile','test'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-clean/tasks');
   if(!!~['build','compile'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-preprocess/tasks');
   if(!!~['build','compile','server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-concat/tasks');
   if(!!~['build'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-uglify/tasks');
