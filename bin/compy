@@ -90,6 +90,7 @@ if (cmd == "plate") {
     fs.open(options.cwd + "/package.json", "w", function (err, fd) {
       fs.write(fd, data.toString().replace(/\$name/g, name));
       fs.close(fd);
+      console.log("You can start building your app with appstart.js file");
     })
   });
   return;

@@ -7,6 +7,6 @@
   "compy": {
     "dependencies": {
     },
-    "main": "app.js"
+    "main": "appstart.js"
   }
 }
