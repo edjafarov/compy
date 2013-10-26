@@ -35,8 +35,7 @@
     "commander": "~2.0.0",
     "complete": "~0.4.3",
     "connect": "~2.9.0",
-    "underscore": "~1.5.2",
-    "karma-mocha": "~0.1.0"
+    "underscore": "~1.5.2"
   },
   "bin": {
     "compy": "./bin/compy"

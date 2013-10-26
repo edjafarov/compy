@@ -14,20 +14,25 @@ var folderDir = function folderDir(connect, point){
 
 var config = require(__dirname + "/config.json");
 module.exports = function(grunt){
-
-  var karmaAdapters = __dirname + "/node_modules/grunt-karma/node_modules/karma/adapter";
+  // generate file names for prod
   var appJsProd = 'app' + Date.now() + ".js";
   var appCssProd = 'app' + Date.now() + ".css";
   var indexTemplate = __dirname + '/index.html';
+  
   var base = grunt.option('targetBase');
   var cmd = grunt.option('cmd').toString();
   process.env.targetBase = base;
+  
   var destination = grunt.option('destination');
   var serverPath = grunt.option('server');
-
+  
+  //override index html
   if(grunt.file.exists(base + "/index.html")){
     indexTemplate = base + "/index.html";
   }
+  // add project's node_modules to NODE_PATH
+  process.env.NODE_PATH += ";" + path.resolve(base) + "/node_modules";
+  // build ignore source pattern
   var ignore = ['components','dist','node_modules'];
   var packageJson = grunt.file.readJSON(base + '/package.json');
   if(packageJson.compy && packageJson.compy.paths) {
