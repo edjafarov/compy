@@ -227,6 +227,9 @@ module.exports = function(grunt){
     },
     // concat is used to add component runner to the app
     concat: {
+      options:{
+        banner: '<%= pkg.compy.banner %>'
+      },
       dist: {
         src: ['<%= dest %>/app.js', __dirname + '/tmpl/runner.js'],
         dest: '<%= dest%>/app.js'
