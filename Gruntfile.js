@@ -73,7 +73,15 @@ module.exports = function(grunt){
       templates: '<%= src.templates %>',
       paths: '<%= pkg.compy.paths %>',
       local: '<%= pkg.compy.local %>',
-      remotes: '<%= pkg.compy.remotes %>'
+      remotes: '<%= pkg.compy.remotes %>',
+      keywords: '<%= pkg.keywords %>',
+      repo: (function(){
+        if(packageJson.repository && packageJson.repository.type === "git"){
+          var repo = /([^\/]*?\/[^\/]*?)\.git/.exec(packageJson.repository.url);
+          return repo && repo[1];
+        }
+        return null;
+      })()
     },
     // we-re taking all sources from here
     src:{
@@ -351,6 +359,7 @@ module.exports = function(grunt){
       config[asset] = remap;
     })
   }
+  grunt.config.set('utils.ignoreSources', ignoreSources);
 
   if(!!~['build','compile','server','test','watch'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-component-constructor/tasks');
   if(!!~['server'].indexOf(cmd)) grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-connect/tasks');
@@ -380,8 +389,9 @@ module.exports = function(grunt){
       args = args.concat(pkgCheck);
     }
     if(!config.dependencies) config.dependencies = {};
+    var dev = grunt.option('devInstall');
 
-    compInstall(config, {args: args, out: base + "/components", force: grunt.option('force')}, installed);
+    compInstall(config, {args: args, out: base + "/components", force: grunt.option('force'), dev: dev}, installed);
 
     function installed(err, deps){
       if(args.length === 0) return done();
@@ -391,6 +401,10 @@ module.exports = function(grunt){
       done();
     }
   })
+
+
+  require('./src/publish.js')(grunt);
+
 
   grunt.registerTask('generate-tests-runner', function(){
     var specFiles = grunt.config('src.tests');

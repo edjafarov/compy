@@ -24,6 +24,12 @@ var root  = path.join(path.dirname(fs.realpathSync(__filename)), '..');
 */
 
 var packageJson = require(root + '/package.json');
+var isComponent;
+
+if(fs.existsSync(process.cwd() + '/package.json')){
+  var projectJson = require(process.cwd() + '/package.json');
+  if(projectJson.compy) isComponent = projectJson.compy.publishto;
+};
 
 program
   .version(packageJson.version)
@@ -36,6 +42,7 @@ program
   .option('-v, --verbose', 'verbosity')
   .option('-f, --force', 'force installation of packages')
   .option('-s, --staticServer <path>', 'custom server that serves static with compy middleware')
+  .option('--dev', 'install dev dependencies')
 
 program.on('--help', function(){
   console.log('  Commands:');
@@ -47,6 +54,7 @@ program.on('--help', function(){
   console.log('    test                    run karma tests');
   console.log('    watch                   watch and rebuild assets on change');
   console.log('    plate [appname]         generate boilerplate package.json');
+  if(isComponent) console.log('    publish [version]       publish version as a package');
   console.log();
   console.log();
 }).parse(process.argv);
@@ -66,9 +74,9 @@ var options = {
   isStandaloneLib: program.library,
   isComponentjs: program.component,
   isApplication: program.application,
-  force: !!program.force
+  force: !!program.force,
+  devInstall : !!program.dev
 }
-
 var argv = process.argv.slice(0,2);
 argv.push(program.args.map(function(a){return a.toString()}).join(":"));
 
@@ -118,4 +126,5 @@ require('grunt').cli({gruntfile: root + "/Gruntfile.js",
     destination: options.destination,
     verbose : options.verbose,
     server: options.server,
-    force: options.force});
+    force: options.force,
+    devInstall: options.devInstall});
