@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "component js boilerplate js project",
   "main": "compy-helper.js",
   "scripts": {
@@ -35,7 +35,8 @@
     "commander": "~2.0.0",
     "complete": "~0.4.3",
     "connect": "~2.9.0",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "rimraf": "~2.2.2"
   },
   "bin": {
     "compy": "./bin/compy"
