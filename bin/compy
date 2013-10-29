@@ -42,7 +42,7 @@ program
   .option('-v, --verbose', 'verbosity')
   .option('-f, --force', 'force installation of packages')
   .option('-s, --staticServer <path>', 'custom server that serves static with compy middleware')
-  .option('--dev', 'install dev dependencies')
+  .option('    --dev', 'install dev dependencies')
 
 program.on('--help', function(){
   console.log('  Commands:');

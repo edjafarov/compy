@@ -2,7 +2,7 @@
   "name": "$name",
   "version": "0.0.0",
   "description": "Application $name",
-  "main": "index.js",
+  "main": "appstart.js",
   "license": "BSD",
   "compy": {
     "dependencies": {
