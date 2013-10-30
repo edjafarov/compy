@@ -404,7 +404,7 @@ module.exports = function(grunt){
 
 
   require('./src/publish.js')(grunt);
-
+  require('./src/graph.js')(grunt);
 
   grunt.registerTask('generate-tests-runner', function(){
     var specFiles = grunt.config('src.tests');

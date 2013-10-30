@@ -55,6 +55,7 @@ program.on('--help', function(){
   console.log('    watch                   watch and rebuild assets on change');
   console.log('    plate [appname]         generate boilerplate package.json');
   if(isComponent) console.log('    publish [version]       publish version as a package');
+  console.log('    graph                   show all dependencies/versions installed')
   console.log();
   console.log();
 }).parse(process.argv);
