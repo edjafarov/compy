@@ -11,7 +11,7 @@ Compy makes your development fun by:
 * supporting coffeescript, sass, jade and other [plugins](#plugins)
 * giving you livereload with simple static server
 
-watch [screencast](http://www.youtube.com/watch?v=IYSPHvw2KSk) for details [some of functionality was changed in 0.1.3]
+watch [screencast](http://vimeo.com/edjafarov/compy-intro) for details 
 
 ##plugins
 compy can use component's [plugins](https://github.com/component/component/wiki/Plugins) to extend it's functionality. For example if you want to use coffee in your project, you need to ```npm install component-coffee``` in your project's folder.
