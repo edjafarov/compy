@@ -411,7 +411,7 @@ module.exports = function(grunt){
     specFiles = grunt.file.expand(specFiles);
     var source = "";
     specFiles.forEach(function(file){
-      var runModule = [path.basename(base), path.relative(base, file)].join('/');
+      var runModule = [packageJson.name, path.relative(base, file)].join('/');
       source += "require('"+runModule+"');\n";
     });
     grunt.file.write(path.normalize(base + '/' + grunt.config('dest') + "/runner.js"), source);

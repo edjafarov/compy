@@ -4,14 +4,19 @@
 compy - lightweight app builder/compiller
 =====
 Compy is a lightweight approach for developing web apps (framework/lib agnostic). Based on TJ's [component](https://github.com/component/component) package manager it allows you to install components and use them in your code right away.
-Compy makes your development fun by:
+Compy makes your development fun because:
 
-* allowing you to use installed components without any configurations by just requiring them.
-* providing local ```require```
-* supporting coffeescript, sass, jade and other [plugins](#plugins)
-* giving you livereload with simple static server
+* you can install and use components without any configurations
+* you can use local ```require```
+* you can use coffeescript, sass, jade and other [plugins](#plugins)
+* you can run karma tests
+* you will have livereload with simple static server
 
-watch [screencast](http://vimeo.com/edjafarov/compy-intro) for details 
+watch [screencast](http://vimeo.com/edjafarov/compy-intro) for live intro.
+
+##install
+
+```$ npm install compy -g```
 
 ##plugins
 compy can use component's [plugins](https://github.com/component/component/wiki/Plugins) to extend it's functionality. For example if you want to use coffee in your project, you need to ```npm install component-coffee``` in your project's folder.
@@ -29,9 +34,6 @@ compy was tested with following plugins:
 - [bscomp/component-lesser](https://github.com/bscomp/component-lesser) - [LESS](https://github.com/less/less.js) transpiler for compy
 - [segmentio/component-markdown](https://github.com/segmentio/component-markdown) - Compile Markdown templates and make them available as Javascript strings.
 
-##install
-
-```$ npm install compy -g```
 
 ## cli comands
 ```
@@ -39,8 +41,14 @@ compy was tested with following plugins:
 
   Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
+    -h, --help                 output usage information
+    -V, --version              output the version number
+    -d, --dir <path>           project source path. Must contain package.json
+    -o, --output <path>        output directory for build/compile
+    -v, --verbose              verbosity
+    -f, --force                force installation of packages
+    -s, --staticServer <path>  custom server that serves static with compy middleware
+        --dev                  install dev dependencies
 
   Commands:
 
@@ -50,12 +58,16 @@ compy was tested with following plugins:
     server [watch]          run static server. If "watch" option enabled - watch changes, recompile and push livereload
     test                    run karma tests
     watch                   watch and rebuild assets on change
+    plate [appname]         generate boilerplate package.json
+    graph                   show all dependencies/versions installed
+
+
 ```
 ## config
 The configuration for compy sits in package.json inside compy namespace. ```main``` is an entry point of your app and the only required property.
 
 ```json
-{                                                                                                                 
+{
   "name": "appName",
   "version": "0.0.0",
   "description": "my awesome app",
@@ -70,21 +82,32 @@ The configuration for compy sits in package.json inside compy namespace. ```main
 }
 ```
 
-## what's about grunt?
-Compy is basically a grunt file that does all the magic. You can check it [here](https://github.com/edjafarov/compy/blob/master/Gruntfile.js)
-That also mean that is you want to use grunt in your project, you need to know some details.
+## writing tests
+To run karma based tests with compy. The package.json configuration should be adjusted and all required karma plugins should be installed. For example to run mocha tests with sinon and chai inside phantomjs following configurations should be set:
 
-You can create local ```Grintfile.js``` inside your project. To run tasks though instead of ```grunt <taskname>``` you need to do ```compy <taskname>```
-
-There are ```compile``` and ```build``` tasks which you can extend/change. Original tasks have aliases ```compy-compile``` and ```compy-build``` ([src](https://github.com/edjafarov/compy/blob/588028693f1762cc1f59e9464f7824a2bdafd1ba/Gruntfile.js#L239-L241))
-
-So if you want to precompile something, your grunt file will look like:
-
-```javascript
+```json
+{
   ...
-  grunt.registerTask('compile',['<precompileTask>','compy-compile'])
-  ...
+  "compy":{
+     ...
+     "tests":{
+      "frameworks":[
+        "mocha", "sinon-chai"
+      ],
+      "plugins":[
+        "karma-mocha",
+        "karma-sinon-chai",
+        "karma-phantomjs-launcher"
+      ]
+    }
+  }
+}
 ```
+And plugins should be installed locally.
+
+```$ npm install karma-mocha karma-sinon-chai karma-phantomjs-launcher```
+
+now with ```compy test``` all *.spec.js files will be runned as a mocha tests.
 
 ## license
 
