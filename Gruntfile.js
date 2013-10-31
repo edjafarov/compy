@@ -70,6 +70,7 @@ module.exports = function(grunt){
       styles: '<%= src.styles %>',
       images: '<%= src.images %>',
       fonts: '<%= src.fonts %>',
+      files: '<%= pkg.compy.files %>',
       templates: '<%= src.templates %>',
       paths: '<%= pkg.compy.paths %>',
       local: '<%= pkg.compy.local %>',
