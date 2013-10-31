@@ -47,7 +47,7 @@ program
 program.on('--help', function(){
   console.log('  Commands:');
   console.log();
-  console.log('    install [name ...]      install dependencies or component');
+  console.log('    install [name]          install dependencies or component');
   console.log('    compile                 compile app (in dist folder by default)');
   console.log('    build                   build the app (compile and minify sources)');
   console.log('    server [watch]          run static server. If "watch" option enabled - watch changes, recompile and push livereload');
@@ -56,6 +56,7 @@ program.on('--help', function(){
   console.log('    plate [appname]         generate boilerplate package.json');
   if(isComponent) console.log('    publish [version]       publish version as a package');
   console.log('    graph                   show all dependencies/versions installed')
+  console.log('    search [terms]          search component registry for a component')
   console.log();
   console.log();
 }).parse(process.argv);
@@ -83,7 +84,15 @@ argv.push(program.args.map(function(a){return a.toString()}).join(":"));
 
 process.argv = argv;
 process.program = program;
-
+if(cmd == "search"){
+  var search = require("../src/search.js");
+  program.args.shift();
+  search({
+    verbose: options.verbose,
+    terms: program.args,
+  })
+  return;
+}
 
 // execute `plate` command BEFORE Grunt.js context
 if (cmd == "plate") {
