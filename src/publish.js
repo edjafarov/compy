@@ -31,6 +31,7 @@ module.exports = function(grunt){
       if(branch === "master\n"){
         return console.log("You can't publish from master branch. master is for published component. Your dev code should be elsewere. And by compy publish it will be published in master.");
       }
+      //check if everything is committed to develop
       branchChecked();
     });
     
@@ -94,7 +95,11 @@ module.exports = function(grunt){
       });
       grunt.file.write("_pub/component.json", JSON.stringify(config, null, 2));
       publishToRepo();
+    // TODO:
     // move readme file
+    // create standalone sources
+    // create minified sources
+    // publish refreshed gh-pages site
     }
 
     function publishToRepo(){
