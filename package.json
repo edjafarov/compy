@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.1.20",
+  "version": "0.1.22",
   "description": "component js boilerplate js project",
   "main": "compy-helper.js",
   "scripts": {
@@ -8,8 +8,14 @@
     "t": "unset NOCK_OFF;node ./node_modules/.bin/mocha test/compy.spec.js",
     "fullTest": "export NOCK_OFF=true;node ./node_modules/.bin/mocha test/compy.spec.js"
   },
-  "repository": "https://github.com/edjafarov/compy.git",
-  "author": "Eldar Djafarov <djkojb@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edjafarov/compy.git"
+  },
+  "author": {
+    "name": "Eldar Djafarov",
+    "email": "djkojb@gmail.com"
+  },
   "license": "BSD",
   "dependencies": {
     "grunt-cli": "~0.1.9",
@@ -40,5 +46,16 @@
   },
   "bin": {
     "compy": "./bin/compy"
-  }
+  },
+  "readme": "[![NPM version](https://badge.fury.io/js/compy.png)](http://badge.fury.io/js/compy)\n[![Dependency Status](https://gemnasium.com/edjafarov/compy.png)](https://gemnasium.com/edjafarov/compy)\n[![Build Status](https://travis-ci.org/edjafarov/compy.png?branch=master)](https://travis-ci.org/edjafarov/compy)\ncompy - lightweight app builder/compiller\n=====\nCompy is a lightweight approach for developing web apps (framework/lib agnostic). Based on TJ's [component](https://github.com/component/component) package manager it allows you to install components and use them in your code right away.\nCompy makes your development fun because:\n\n* you can install and use components without any configurations\n* you can use local ```require```\n* you can use coffeescript, sass, jade and other [plugins](#plugins)\n* you can run karma tests\n* you will have livereload with simple static server\n\nwatch [screencast](http://vimeo.com/edjafarov/compy-intro) for live intro.\n\n##install\n\n```$ npm install compy -g```\n\n##plugins\ncompy can use component's [plugins](https://github.com/component/component/wiki/Plugins) to extend it's functionality. For example if you want to use coffee in your project, you need to ```npm install component-coffee``` in your project's folder.\n\ncompy was tested with following plugins:\n- [rschmukler/component-stylus-plugin](https://github.com/rschmukler/component-stylus-plugin) — precompile stylus\n- [segmentio/component-jade](https://github.com/segmentio/component-jade) — precompile jade templates\n- [anthonyshort/component-coffee](https://github.com/anthonyshort/component-coffee) - require CoffeeScript files as scripts\n- [anthonyshort/component-sass](https://github.com/anthonyshort/component-sass) - compile Sass files using node-sass\n- [kewah/component-builder-handlebars](https://github.com/kewah/component-builder-handlebars) - precompile Handlebars templates\n- [ericgj/component-hogan](https://github.com/ericgj/component-hogan) - Mustache transpiler for component (using Hogan)\n- [segmentio/component-sass](https://github.com/segmentio/component-sass) — Sass transpiler for component\n- [segmentio/component-json](https://github.com/segmentio/component-json) — Require JSON files as Javascript.\n- [queckezz/component-roole](https://github.com/queckezz/component-roole) — Compile [Roole](http://roole.org) files\n- [bscomp/component-lesser](https://github.com/bscomp/component-lesser) - [LESS](https://github.com/less/less.js) transpiler for compy\n- [segmentio/component-markdown](https://github.com/segmentio/component-markdown) - Compile Markdown templates and make them available as Javascript strings.\n\n\n## cli comands\n```\n  Usage: compy <command> [options]\n\n  Options:\n\n    -h, --help                 output usage information\n    -V, --version              output the version number\n    -d, --dir <path>           project source path. Must contain package.json\n    -o, --output <path>        output directory for build/compile\n    -v, --verbose              verbosity\n    -f, --force                force installation of packages\n    -s, --staticServer <path>  custom server that serves static with compy middleware\n        --dev                  install dev dependencies\n\n  Commands:\n\n    install [name ...]      install dependencies or component\n    compile                 compile app (in dist folder by default)\n    build                   build the app (compile and minify sources)\n    server [watch]          run static server. If \"watch\" option enabled - watch changes, recompile and push livereload\n    test                    run karma tests\n    watch                   watch and rebuild assets on change\n    plate [appname]         generate boilerplate package.json\n    graph                   show all dependencies/versions installed\n\n\n```\n## config\nThe configuration for compy sits in package.json inside compy namespace. ```main``` is an entry point of your app and the only required property.\n\n```json\n{\n  \"name\": \"appName\",\n  \"version\": \"0.0.0\",\n  \"description\": \"my awesome app\",\n  \"main\": \"index.js\",\n  \"license\": \"BSD\",\n  \"compy\": {\n    \"dependencies\": {\n      \"component/jquery\": \"*\"\n    },\n    \"main\": \"app.js\"\n  }\n}\n```\n\n## writing tests\nTo run karma based tests with compy. The package.json configuration should be adjusted and all required karma plugins should be installed. For example to run mocha tests with sinon and chai inside phantomjs following configurations should be set:\n\n```json\n{\n  ...\n  \"compy\":{\n     ...\n     \"tests\":{\n      \"frameworks\":[\n        \"mocha\", \"sinon-chai\"\n      ],\n      \"plugins\":[\n        \"karma-mocha\",\n        \"karma-sinon-chai\",\n        \"karma-phantomjs-launcher\"\n      ]\n    }\n  }\n}\n```\nAnd plugins should be installed locally.\n\n```$ npm install karma-mocha karma-sinon-chai karma-phantomjs-launcher```\n\nnow with ```compy test``` all *.spec.js files will be runned as a mocha tests.\n\n## license\n\nMIT\n\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/edjafarov/compy/issues"
+  },
+  "_id": "compy@0.1.22",
+  "dist": {
+    "shasum": "ec37950ec98a6041b7d06e5cbdd69ebffd451f18"
+  },
+  "_from": "compy@~0.1.22",
+  "_resolved": "https://registry.npmjs.org/compy/-/compy-0.1.22.tgz"
 }

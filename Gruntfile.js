@@ -25,6 +25,7 @@ module.exports = function(grunt){
   process.env.targetBase = base;
   
   var destination = grunt.option('destination');
+  process.env.destBase = destination;
   var serverPath = grunt.option('server');
   
   //override index html
@@ -116,8 +117,9 @@ module.exports = function(grunt){
             if(pkg.compy.dependencies){
               builder.config.dependencies = pkg.compy.dependencies;
             }
-            ignoreSources(builder.config, grunt.config('src.tests'));
             usePlugins(base, builder);
+            ignoreSources(builder.config, grunt.config('src.tests'));
+            
           }
         }
       },
@@ -130,8 +132,9 @@ module.exports = function(grunt){
             if(pkg.compy.dependencies){
               builder.config.dependencies = pkg.compy.dependencies;
             }
-            ignoreSources(builder.config);
             usePlugins(base, builder);
+            ignoreSources(builder.config);
+            
           }
         }
       },
@@ -145,8 +148,9 @@ module.exports = function(grunt){
             if(pkg.compy.dependencies){
               builder.config.dependencies = pkg.compy.dependencies;
             }
-            ignoreSources(builder.config);
             usePlugins(base, builder);
+            ignoreSources(builder.config);
+            
           }
         }
       },
@@ -160,8 +164,8 @@ module.exports = function(grunt){
             if(pkg.compy.dependencies){
               builder.config.dependencies = pkg.compy.dependencies;
             }
-            ignoreSources(builder.config);
             usePlugins(base, builder);
+            ignoreSources(builder.config);
           }
         }
       },
@@ -175,8 +179,9 @@ module.exports = function(grunt){
             if(pkg.compy.dependencies){
               builder.config.dependencies = pkg.compy.dependencies;
             }
-            ignoreSources(builder.config);
             usePlugins(base, builder);
+            ignoreSources(builder.config);
+            
           }
         }
       }
@@ -265,6 +270,9 @@ module.exports = function(grunt){
       }
     },
     uglify: {
+      options:{
+        report: 'gzip'
+      },
       build: {
         src: ['<%= dest%>/app.js'],
         dest: '<%= dest%>/' + appJsProd
@@ -294,6 +302,19 @@ module.exports = function(grunt){
   }
   var matchPlugins = require('./component-plugins-matching.js');
   matchPlugins(compyGruntConfig, getPlugins(base));
+  
+  var plugins = getPlugins(base);
+  plugins.forEach(function(plugin){
+    var pluginModule = require(base + "/node_modules/" + plugin);
+    if(pluginModule.ext && typeof(pluginModule.ext) == 'object'){
+      Object.keys(pluginModule.ext).forEach(function(type){
+        if(!compyGruntConfig.src[type]) compyGruntConfig.src[type] = [];
+        pluginModule.ext[type].forEach(function(ext){
+          compyGruntConfig.src[type].unshift(base + '{/!' + ignoreString + '/**/*' + ext + ',/*' + ext + '}');
+        })
+      });
+    }
+  });
 
   function usePlugins(baseDir, builder){
     var plugins = getPlugins(baseDir);
@@ -301,7 +322,7 @@ module.exports = function(grunt){
       var pluginModule = require(baseDir + "/node_modules/" + plugin);
       if(matchPlugins.config[plugin] && matchPlugins.config[plugin].run){
         return matchPlugins.config[plugin].run(pluginModule, builder);
-      }
+      } 
       builder.use(pluginModule);
     })
   }
@@ -415,7 +436,7 @@ module.exports = function(grunt){
       var runModule = [packageJson.name, path.relative(base, file)].join('/');
       source += "require('"+runModule+"');\n";
     });
-    grunt.file.write(path.normalize(base + '/' + grunt.config('dest') + "/runner.js"), source);
+    grunt.file.write(path.normalize(grunt.config('dest') + "/runner.js"), source);
   })
 
   grunt.registerTask('server', 'run server', function(arg){
