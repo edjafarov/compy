@@ -87,7 +87,7 @@ module.exports = function (config, opts, callback){
 
   // default to github
 
-  conf.remotes.push('https://raw.github.com');
+  conf.remotes.push('https://raw.githubusercontent.com/');
 
   // install
 
