@@ -1,6 +1,6 @@
 {
   "name": "compy",
-  "version": "0.1.22",
+  "version": "0.1.30",
   "description": "component js boilerplate js project",
   "main": "compy-helper.js",
   "scripts": {
