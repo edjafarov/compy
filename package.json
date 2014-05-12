@@ -42,7 +42,10 @@
     "complete": "~0.4.3",
     "connect": "~2.9.0",
     "underscore": "~1.5.2",
-    "rimraf": "~2.2.2"
+    "rimraf": "~2.2.2",
+    "karma-chrome-launcher": "https://registry.npmjs.org/karma-chrome-launcher/-/karma-chrome-launcher-0.1.0.tgz",
+    "karma": "~0.12.15",
+    "karma-firefox-launcher": "https://registry.npmjs.org/karma-firefox-launcher/-/karma-firefox-launcher-0.1.0.tgz"
   },
   "bin": {
     "compy": "./bin/compy"
